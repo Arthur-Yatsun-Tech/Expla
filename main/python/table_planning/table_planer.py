@@ -6,7 +6,8 @@ class TablePlanner:
         self.count_of_x = count_of_x
         self.level = level
 
-        self.is_full_table = (self.level == 5) and self.count_of_x >= 6
+        self.is_full_table = (self.level == 5) and self.count_of_x >= 5
+        print(self.is_full_table)
 
     def create_table(self):
         if self.is_full_table:

@@ -14,9 +14,9 @@ from controllers.main_window.radios import set_level
 class MainApp(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.levels = 3
-        self.factors = 3
-        self.experiments = 4
+        self.levels = 3  # 2
+        self.factors = 3  # 0
+        self.experiments = 4  # 0
 
         group = Groups(self)
         widget = QWidget()
