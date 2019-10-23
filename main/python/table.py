@@ -43,7 +43,7 @@ class TableApp(QMainWindow):
         calculate = QPushButton('Посчитать')
         continue_button = QPushButton('Продолжить')
 
-        calculate.clicked.connect(lambda: calculate_data(self.table, self.y))
+        calculate.clicked.connect(lambda: calculate_data(self))
 
         button_layout.addWidget(save_button)
         button_layout.addWidget(calculate)
@@ -71,7 +71,8 @@ class TableApp(QMainWindow):
 
     def _get_header_labels(self):
         y_s = [f'y{i + 1}' for i in range(self.experiments)]
-        headers = list(self.plan.keys()) + y_s
+        var_s = ['', 'mean', 'disp', 'std']
+        headers = list(self.plan.keys()) + y_s + var_s
         return headers
 
     def closeEvent(self, event: PySide2.QtGui.QCloseEvent):

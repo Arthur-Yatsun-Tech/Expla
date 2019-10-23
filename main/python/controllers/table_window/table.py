@@ -42,9 +42,33 @@ def set_table_signs(self):
 
 
 def set_table_color(self):
+    def get_blocks(column):
+        if column == 0 or column == 1:
+            return self.factors - 1
+        else:
+            return self.factors - column
+
     if self.is_full_table:
-        self.table.item(1, 1).setBackgroundColor(QColor(*COLORS[0]))
-        self.table.item(1, 2).setBackgroundColor(QColor(*COLORS[1]))
+        for column in range(self.factors):
+            block_size = self.levels ** (column + 1)
+            colors = COLORS
+
+            if column == 0:
+                block_size = self.levels ** (column + 2)
+
+            print(f'block size {block_size}')
+            print(get_blocks(column))
+
+            for block in range(get_blocks(column)):
+                for row in range(self.levels ** (block + 1), self.levels ** (block + 2)):
+
+                    self.table.item(row - self.levels, column).setBackgroundColor(QColor(*colors[block]))
+
+                    # if column == 0:
+                    #     self.table.item(row, column).setBackgroundColor(QColor(*colors[-block]))
+                    # else:
+                    #     self.table.item(row, column).setBackgroundColor(QColor(*colors[-block]))
+                    #     colors.pop()
 
 
 def fill_random_numbers(self):
@@ -54,4 +78,9 @@ def fill_random_numbers(self):
 
 
 def fill_calculated_data(self):
-    pass
+    start_point = self.experiments + self.factors + 1
+
+    for row in range(self.number_of_rows):
+        self.table.setItem(row, start_point, QTableWidgetItem(str(self.mean[row])))
+        self.table.setItem(row, start_point + 1, QTableWidgetItem(str(self.var[row])))
+        self.table.setItem(row, start_point + 2, QTableWidgetItem(str(self.std[row])))
