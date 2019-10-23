@@ -10,9 +10,9 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.levels = 5  # 2
-        self.factors = 0  # 0
-        self.experiments = 0  # 0
+        self.levels = 5
+        self.factors = 0
+        self.experiments = 0
 
         widget = layouts.init_layouts(self)
         self.setCentralWidget(widget)

@@ -3,9 +3,9 @@ from PySide2.QtGui import QRegExpValidator
 from PySide2.QtWidgets import QGroupBox, QLineEdit, QRadioButton, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, \
     QGridLayout, QWidget
 
-from controllers.main_window.elements.buttons import planning_table
-from controllers.main_window.elements.qlines import set_factors, set_experiments
-from controllers.main_window.elements.radios import set_level, get_level
+from controllers.main_window.elements.buttons import planning_table, set_buttons_disabled
+from controllers.main_window.elements.qlines import set_factors, set_experiments, set_disabled
+from controllers.main_window.elements.radios import set_level
 
 
 def init_layouts(self):
@@ -29,9 +29,9 @@ def init_layouts(self):
 def _init_parameters_layout(self):
     experiment_parameters = QGroupBox()
 
-    number_of_factors_label = QLabel("Введите коло-во факторов")
+    number_of_factors_label = QLabel("(1) Введите коло-во факторов")
     self.number_of_factors = QLineEdit()
-    number_of_experiments_label = QLabel("Введите коло-во серий экспериментов")
+    number_of_experiments_label = QLabel("(2) Введите коло-во серий экспериментов")
     self.number_of_experiments = QLineEdit()
 
     self.number_of_factors.textEdited.connect(lambda: set_factors(self, self.number_of_factors.text()))
@@ -60,7 +60,7 @@ def _init_parameters_layout(self):
 def _init_levels_layout(self):
     experiment_levels_layout = QGroupBox()
 
-    levels_label = QLabel('Введите коло-во уровней')
+    levels_label = QLabel('(3) Введите коло-во уровней')
     self.level_5 = QRadioButton('5')
     self.level_3 = QRadioButton('3')
     self.level_2 = QRadioButton('2')
@@ -68,6 +68,10 @@ def _init_levels_layout(self):
     self.level_5.clicked.connect(lambda: set_level(self, self.level_5.text()))
     self.level_3.clicked.connect(lambda: set_level(self, self.level_3.text()))
     self.level_2.clicked.connect(lambda: set_level(self, self.level_2.text()))
+
+    self.level_5.setEnabled(False)
+    self.level_3.setEnabled(False)
+    self.level_2.setEnabled(False)
 
     radio_group_layout = QHBoxLayout()
     radio_group_layout.addWidget(self.level_2)
@@ -84,7 +88,11 @@ def _init_levels_layout(self):
 
 def _init_parameters_table_layout(self):
     parameters_table_layout = QGroupBox()
-    self.main_layout = QHBoxLayout()
+    main_layout = QVBoxLayout()
+    self.table_layout = QHBoxLayout()
+
+    title_layout = QVBoxLayout()
+    title_layout.addWidget(QLabel("(4) Заполните данные об эксперименте\n"))
 
     self.columns = [QVBoxLayout() for _ in range(10)]
     self.rows_edit_x = [QLineEdit() for _ in range(9)]
@@ -96,17 +104,21 @@ def _init_parameters_table_layout(self):
     self.columns[0].addWidget(QLabel('delta 1'))
     self.columns[0].addWidget(QLabel('delta 2'))
 
-    [add_widgets_into_column(
-        self.columns[column],
-        f'{column}',
-        self.rows_edit_x[column - 1],
-        self.rows_edit_d1[column - 1],
-        self.rows_edit_d2[column - 1]
-    ) for column in range(1, 10)]
+    for column in range(1, 10):
+        self.columns[column].addWidget(QLabel(f'{column}'))
+        self.columns[column].addWidget(self.rows_edit_x[column - 1])
+        self.columns[column].addWidget(self.rows_edit_d1[column - 1])
+        if self.rows_edit_d2[column - 1] is not None:
+            self.columns[column].addWidget(self.rows_edit_d2[column - 1])
 
-    [self.main_layout.addLayout(self.columns[column]) for column in range(10)]
+    self.rows_edit_x[0].textEdited.connect(lambda: set_buttons_disabled(self, mode=True))
 
-    parameters_table_layout.setLayout(self.main_layout)
+    set_disabled(self, mode=False)
+    [self.table_layout.addLayout(self.columns[column]) for column in range(10)]
+
+    main_layout.addLayout(title_layout)
+    main_layout.addLayout(self.table_layout)
+    parameters_table_layout.setLayout(main_layout)
     return parameters_table_layout
 
 
@@ -115,7 +127,7 @@ def _init_go_next_layout(self):
 
     self.export_table_button = QPushButton('Сохранить таблицу')
     self.import_table_button = QPushButton('Загрузить таблицу')
-    self.open_table_button = QPushButton('Открыть таблицу эксперимента')
+    self.open_table_button = QPushButton('(5) Открыть таблицу эксперимента')
 
     self.open_table_button.clicked.connect(lambda: planning_table(self))
     self.import_table_button.setEnabled(False)
@@ -128,13 +140,6 @@ def _init_go_next_layout(self):
     main_layout.addWidget(self.open_table_button)
     main_layout.addLayout(layout1)
 
+    set_buttons_disabled(self, mode=False)
     go_next_layout.setLayout(main_layout)
     return go_next_layout
-
-
-def add_widgets_into_column(column, label_text, edit_x, edit_d1, edit_d2=None):
-    column.addWidget(QLabel(label_text))
-    column.addWidget(edit_x)
-    column.addWidget(edit_d1)
-    if edit_d2 is not None:
-        column.addWidget(edit_d2)

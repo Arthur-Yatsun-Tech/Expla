@@ -9,3 +9,9 @@ def save_table(self):
 def planning_table(self):
     table = TableApp(self)
     table.show()
+
+
+def set_buttons_disabled(self, mode=False):
+    self.open_table_button.setEnabled(mode)
+    self.import_table_button.setEnabled(mode)
+    self.export_table_button.setEnabled(mode)

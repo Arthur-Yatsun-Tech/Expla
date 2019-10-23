@@ -1,11 +1,10 @@
 from PySide2.QtWidgets import QLabel
 
-
-def get_level(text):
-    return int(text)
+from controllers.main_window.elements.qlines import set_disabled
 
 
 def set_level(self, text):
+    set_disabled(self, mode=True)
     self.levels = int(text)
 
     if self.levels == 2 or self.levels == 3:

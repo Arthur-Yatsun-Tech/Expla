@@ -2,14 +2,17 @@ from PySide2.QtWidgets import QLabel
 
 
 def set_factors(self, factors):
+    self.level_5.setEnabled(True)
+    self.level_3.setEnabled(True)
+    self.level_2.setEnabled(True)
+
     if factors in '':
         self.factors = 0
     else:
         self.factors = int(factors)
 
     if self.factors == 0:
-        deleted_columns_count = 10 - self.main_layout.count()
-        print(deleted_columns_count)
+        deleted_columns_count = 10 - self.table_layout.count()
 
         for i in reversed(range(deleted_columns_count)):
 
@@ -20,7 +23,7 @@ def set_factors(self, factors):
             if self.levels == 5:
                 self.columns[::-1][i].addWidget(self.rows_edit_d2[::-1][i])
 
-            self.main_layout.addLayout(self.columns[::-1][i])
+            self.table_layout.addLayout(self.columns[::-1][i])
     else:
         current_factors = 9 - int(self.factors)
         [_deleteItemsOfLayout(self.columns[::-1][i]) for i in range(current_factors)]
@@ -29,6 +32,14 @@ def set_factors(self, factors):
 
 def set_experiments(self, text):
     self.experiments = int(text)
+
+
+def set_disabled(self, mode=False):
+    for column, x, d1, d2 in zip(self.columns, self.rows_edit_x, self.rows_edit_d1, self.rows_edit_d2):
+        column.setEnabled(mode)
+        x.setEnabled(mode)
+        d1.setEnabled(mode)
+        d2.setEnabled(mode)
 
 
 def _deleteItemsOfLayout(layout):
