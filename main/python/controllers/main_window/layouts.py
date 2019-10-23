@@ -65,7 +65,7 @@ def _init_levels_layout(self):
     self.level_3 = QRadioButton('3')
     self.level_2 = QRadioButton('2')
 
-    self.level_5.clicked.connect(lambda: get_level(self.level_5.text()))
+    self.level_5.clicked.connect(lambda: set_level(self, self.level_5.text()))
     self.level_3.clicked.connect(lambda: set_level(self, self.level_3.text()))
     self.level_2.clicked.connect(lambda: set_level(self, self.level_2.text()))
 
@@ -84,7 +84,7 @@ def _init_levels_layout(self):
 
 def _init_parameters_table_layout(self):
     parameters_table_layout = QGroupBox()
-    main_layout = QHBoxLayout()
+    self.main_layout = QHBoxLayout()
 
     self.columns = [QVBoxLayout() for _ in range(10)]
     self.rows_edit_x = [QLineEdit() for _ in range(9)]
@@ -92,20 +92,21 @@ def _init_parameters_table_layout(self):
     self.rows_edit_d2 = [QLineEdit() for _ in range(9)]
 
     self.columns[0].addWidget(QLabel(''))
-    self.columns[0].addWidget(QLabel('x'))
-    self.columns[0].addWidget(QLabel('d1'))
-    self.columns[0].addWidget(QLabel('d2'))
-    [_add_widgets_into_column(
+    self.columns[0].addWidget(QLabel('   x   '))
+    self.columns[0].addWidget(QLabel('delta 1'))
+    self.columns[0].addWidget(QLabel('delta 2'))
+
+    [add_widgets_into_column(
         self.columns[column],
         f'{column}',
         self.rows_edit_x[column - 1],
         self.rows_edit_d1[column - 1],
         self.rows_edit_d2[column - 1]
-    ) for column in range(1, 10)
-    ]
-    [main_layout.addLayout(self.columns[column]) for column in range(10)]
+    ) for column in range(1, 10)]
 
-    parameters_table_layout.setLayout(main_layout)
+    [self.main_layout.addLayout(self.columns[column]) for column in range(10)]
+
+    parameters_table_layout.setLayout(self.main_layout)
     return parameters_table_layout
 
 
@@ -131,7 +132,7 @@ def _init_go_next_layout(self):
     return go_next_layout
 
 
-def _add_widgets_into_column(column, label_text, edit_x, edit_d1, edit_d2=None):
+def add_widgets_into_column(column, label_text, edit_x, edit_d1, edit_d2=None):
     column.addWidget(QLabel(label_text))
     column.addWidget(edit_x)
     column.addWidget(edit_d1)
