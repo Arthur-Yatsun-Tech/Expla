@@ -4,9 +4,8 @@ import sys
 import PySide2
 from PySide2.QtGui import QColor
 from PySide2.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QPushButton, QHBoxLayout, \
-    QTableWidget, QTableWidgetItem
+    QTableWidget
 from fbs_runtime.application_context.PySide2 import ApplicationContext
-from pyside2uic.properties import QtGui
 
 from table_planning.table_planer import TablePlanner
 from controllers.table_window.table import disable_parent, get_experiments_data,    set_table_signs, fill_random_numbers
@@ -29,6 +28,7 @@ class TableApp(QMainWindow):
             self.number_of_rows = self.levels ** self.factors
         else:
             self.number_of_rows = self.factors * 25
+
         self.number_of_columns = 100
 
         self.table = QTableWidget()

@@ -1,9 +1,11 @@
+from PySide2.QtCore import QRegExp
+from PySide2.QtGui import QRegExpValidator
 from PySide2.QtWidgets import QGroupBox, QLineEdit, QRadioButton, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, \
     QGridLayout, QWidget
 
 from controllers.main_window.elements.buttons import planning_table
 from controllers.main_window.elements.qlines import set_factors, set_experiments
-from controllers.main_window.elements.radios import set_level
+from controllers.main_window.elements.radios import set_level, get_level
 
 
 def init_layouts(self):
@@ -29,17 +31,20 @@ def _init_parameters_layout(self):
 
     number_of_factors_label = QLabel("Введите коло-во факторов")
     self.number_of_factors = QLineEdit()
-
     number_of_experiments_label = QLabel("Введите коло-во серий экспериментов")
     self.number_of_experiments = QLineEdit()
 
-    self.number_of_factors.textEdited.connect(lambda: set_factors(self))
-    self.number_of_experiments.textEdited.connect(lambda: set_experiments(self))
+    self.number_of_factors.textEdited.connect(lambda: set_factors(self, self.number_of_factors.text()))
+    self.number_of_experiments.textEdited.connect(lambda: set_experiments(self, self.number_of_experiments.text()))
+
+    factors_validator = QRegExpValidator(QRegExp(r"^[2-9]$"))
+    self.number_of_factors.setValidator(factors_validator)
+    experiments_validator = QRegExpValidator(QRegExp(r"^\d{3}$"))
+    self.number_of_experiments.setValidator(experiments_validator)
 
     layout_1 = QVBoxLayout()
     layout_1.addWidget(number_of_factors_label)
     layout_1.addWidget(number_of_experiments_label)
-
     layout_2 = QVBoxLayout()
     layout_2.addWidget(self.number_of_factors)
     layout_2.addWidget(self.number_of_experiments)
@@ -60,9 +65,9 @@ def _init_levels_layout(self):
     self.level_3 = QRadioButton('3')
     self.level_2 = QRadioButton('2')
 
-    self.level_5.clicked.connect(lambda: set_level(self, self.level_5.text))
-    self.level_3.clicked.connect(lambda: set_level(self, self.level_3.text))
-    self.level_2.clicked.connect(lambda: set_level(self, self.level_2.text))
+    self.level_5.clicked.connect(lambda: get_level(self.level_5.text()))
+    self.level_3.clicked.connect(lambda: set_level(self, self.level_3.text()))
+    self.level_2.clicked.connect(lambda: set_level(self, self.level_2.text()))
 
     radio_group_layout = QHBoxLayout()
     radio_group_layout.addWidget(self.level_2)
@@ -90,7 +95,6 @@ def _init_parameters_table_layout(self):
     self.columns[0].addWidget(QLabel('x'))
     self.columns[0].addWidget(QLabel('d1'))
     self.columns[0].addWidget(QLabel('d2'))
-
     [_add_widgets_into_column(
         self.columns[column],
         f'{column}',
@@ -113,7 +117,6 @@ def _init_go_next_layout(self):
     self.open_table_button = QPushButton('Открыть таблицу эксперимента')
 
     self.open_table_button.clicked.connect(lambda: planning_table(self))
-
     self.import_table_button.setEnabled(False)
 
     layout1 = QHBoxLayout()

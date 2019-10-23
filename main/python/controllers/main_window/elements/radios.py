@@ -1,5 +1,11 @@
+def get_level(text):
+    return int(text)
+
+
 def set_level(self, text):
     self.levels = int(text)
+    print(self.levels)
+
     if self.levels == 2 or self.levels == 3:
         if self.factors:
             self.column0_d2_label.setParent(None)
