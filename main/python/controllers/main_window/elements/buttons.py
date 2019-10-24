@@ -1,4 +1,3 @@
-from table_planning.table_preparer import TablePreparer
 from table import TableWindow
 
 

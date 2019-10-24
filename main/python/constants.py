@@ -14,3 +14,5 @@ COLORS = [
     (120, 47, 239),     # violet
     (241, 242, 242)     # gray
 ]
+
+CURRENT_PARAMETER_COLOR = (241, 242, 242)

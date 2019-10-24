@@ -3,7 +3,7 @@ import random
 from PySide2.QtGui import QColor
 from PySide2.QtWidgets import QTableWidgetItem
 
-from constants import COLORS
+from constants import COLORS, CURRENT_PARAMETER_COLOR
 
 
 def get_experiments_data(experiments, number_of_rows, factors, table):
@@ -17,14 +17,13 @@ def get_experiments_data(experiments, number_of_rows, factors, table):
     return y
 
 
-def set_plan(table, plan, factors, rows):
+def set_plan(table, plan, factors, rows, levels):
     keys = [f'x{i + 1}' for i in range(factors)]
-    print(plan)
     for column in range(factors):
         for row in range(rows):
             table.setItem(row, column, QTableWidgetItem(plan[keys[column]][row]))
 
-    # set_table_color(self)
+    set_table_color(table, factors, rows, levels)
 
 
 def fill_random_numbers(self):
@@ -41,31 +40,23 @@ def fill_calculated_data(self):
         self.table.setItem(row, start_point + 1, QTableWidgetItem(str(self.var[row])))
         self.table.setItem(row, start_point + 2, QTableWidgetItem(str(self.std[row])))
 
-# def set_table_color(self):
-#     def get_blocks(column):
-#         if column == 0 or column == 1:
-#             return self.factors - 1
-#         else:
-#             return self.factors - column
-#
-#     if self.is_not_full_table:
-#         for column in range(self.factors):
-#             block_size = self.levels ** (column + 1)
-#             colors = COLORS
-#
-#             if column == 0:
-#                 block_size = self.levels ** (column + 2)
-#
-#             print(f'block size {block_size}')
-#             print(get_blocks(column))
-#
-#             for block in range(get_blocks(column)):
-#                 for row in range(self.levels ** (block + 1), self.levels ** (block + 2)):
-#
-#                     self.table.item(row - self.levels, column).setBackgroundColor(QColor(*colors[block]))
-#
-#                     # if column == 0:
-#                     #     self.table.item(row, column).setBackgroundColor(QColor(*colors[-block]))
-#                     # else:
-#                     #     self.table.item(row, column).setBackgroundColor(QColor(*colors[-block]))
-#                     #     colors.pop()
+
+def set_table_color(table, factors, rows, levels):
+    if not (levels == 5 and factors >= 5):
+        for columns in range(factors, 0, -1):
+            print(f'columns {columns}')
+            for column in range(columns):
+                if columns == 1:
+                    break
+                for row in range(levels ** columns):
+                    table.item(row, column).setBackgroundColor(QColor(*COLORS[columns]))
+    else:
+        for columns in range(factors, 0, -1):
+
+            for column in range(factors):
+                for row in range(25 * columns - 25, 25 * columns):
+                    table.item(row, column).setBackgroundColor(QColor(*COLORS[columns]))
+
+            for row in range(25 * columns - 25, 25 * columns):
+                table.item(row, columns - 1).setBackgroundColor(QColor(*CURRENT_PARAMETER_COLOR))
+

@@ -14,7 +14,7 @@ def init_layouts(self):
     button_layout = init_button_layout(self)
     self.table = init_table_layout(self.rows, self.columns, self.factors, self.experiments, self.plan)
 
-    set_plan(self.table, self.plan, self.factors, self.rows)
+    set_plan(self.table, self.plan, self.factors, self.rows, self.levels)
 
     main_layout.addWidget(self.table)
     main_layout.addLayout(button_layout)

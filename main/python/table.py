@@ -16,7 +16,7 @@ class TableWindow(QMainWindow):
         self.experiments = parent.experiments
         self.levels = parent.levels
         self.columns = 100
-        self.rows = self.factors * 25 if (self.levels == 5) and self.factors >= 5 else self.levels ** self.factors
+        self.rows = self.factors * 25 if (self.levels == 5 and self.factors >= 5) else self.levels ** self.factors
 
         widget = init_layouts(self)
         self.setCentralWidget(widget)
