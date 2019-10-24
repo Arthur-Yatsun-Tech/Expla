@@ -1,5 +1,5 @@
 from table_planning.table_preparer import TablePreparer
-from table import TableApp
+from table import TableWindow
 
 
 def save_table(self):
@@ -7,7 +7,7 @@ def save_table(self):
 
 
 def planning_table(self):
-    table = TableApp(self)
+    table = TableWindow(self)
     table.show()
 
 

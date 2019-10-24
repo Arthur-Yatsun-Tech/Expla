@@ -1,10 +1,12 @@
 import numpy as np
 
-from controllers.table_window.table import fill_calculated_data
+from controllers.table_window.elements.table import fill_calculated_data, get_experiments_data
 
 
 def calculate_data(self):
-    y = list(zip(*self.y))
+    y = get_experiments_data(self.experiments, self.rows, self.factors, self.table)
+
+    y = list(zip(*y))
     y = np.array(y).astype(np.float)
 
     self.mean = [np.mean(row) for row in y]

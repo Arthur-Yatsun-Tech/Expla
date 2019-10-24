@@ -19,9 +19,9 @@ class MainWindow(QMainWindow):
 
 
 if __name__ == '__main__':
-    expla = ApplicationContext()  # 1. Instantiate ApplicationContext
+    expla = ApplicationContext()
     window = MainWindow()
     window.resize(250, 150)
     window.show()
-    exit_code = expla.app.exec_()  # 2. Invoke appctxt.app.exec_()
+    exit_code = expla.app.exec_()
     sys.exit(exit_code)
