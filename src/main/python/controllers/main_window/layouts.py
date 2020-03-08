@@ -1,7 +1,7 @@
 from PySide2.QtCore import QRegExp
 from PySide2.QtGui import QRegExpValidator
 from PySide2.QtWidgets import QGroupBox, QLineEdit, QRadioButton, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, \
-    QGridLayout, QWidget
+    QGridLayout, QWidget, QTableWidget
 
 from controllers.main_window.elements.buttons import planning_table, set_buttons_disabled
 from controllers.main_window.elements.qlines import set_factors, set_experiments, set_disabled
@@ -16,11 +16,17 @@ def init_layouts(self):
     parameters_table_layout = _init_parameters_table_layout(self)
     go_next_layout = _init_go_next_layout(self)
 
+    table = QTableWidget()
+
     main_layout = QGridLayout()
     main_layout.addWidget(enter_parameters_layout, 1, 0)
-    main_layout.addWidget(choose_levels_layout, 1, 1)
-    main_layout.addWidget(parameters_table_layout, 2, 0)
-    main_layout.addWidget(go_next_layout, 2, 1)
+    main_layout.addWidget(choose_levels_layout, 2, 0)
+    main_layout.addWidget(parameters_table_layout, 3, 0)
+    main_layout.addWidget(go_next_layout, 4, 0)
+    main_layout.addWidget(table, 1, 1, 4, 1)
+
+    main_layout.setColumnStretch(0, 1)
+    main_layout.setColumnStretch(1, 3)
 
     widget.setLayout(main_layout)
     return widget

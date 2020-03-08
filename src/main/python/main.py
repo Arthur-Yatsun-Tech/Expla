@@ -14,6 +14,8 @@ class MainWindow(QMainWindow):
         self.factors = 0
         self.experiments = 0
 
+        self.showMaximized()
+
         widget = layouts.init_layouts(self)
         self.setCentralWidget(widget)
 
