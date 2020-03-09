@@ -5,14 +5,14 @@ from controllers.table_window.elements.table import set_plan, fill_random_number
 from table_planning.table_planer import TablePlanner
 
 
-def init_layouts(self):
+def init_layouts(self, table):
     widget = QWidget()
     self.showMaximized()
     self.plan = TablePlanner(self.levels, self.factors).create_table()
 
     main_layout = QVBoxLayout()
     button_layout = init_button_layout(self)
-    self.table = init_table_layout(self.rows, self.columns, self.factors, self.experiments, self.plan)
+    table = init_table_layout(self.rows, self.columns, self.factors, self.experiments, self.plan)
 
     set_plan(self.table, self.plan, self.factors, self.rows, self.levels)
 
@@ -58,8 +58,8 @@ def disable_parent(parent, mode=False):
     [column.setEnabled(mode) for column in parent.rows_edit_x]
     [column.setEnabled(mode) for column in parent.rows_edit_d1]
     [column.setEnabled(mode) for column in parent.rows_edit_d2]
-    parent.export_table_button.setEnabled(mode)
-    parent.import_table_button.setEnabled(mode)
+    # parent.export_table_button.setEnabled(mode)
+    # parent.import_table_button.setEnabled(mode)
     parent.open_table_button.setEnabled(mode)
 
 

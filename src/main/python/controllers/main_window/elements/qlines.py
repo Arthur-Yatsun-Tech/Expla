@@ -1,4 +1,4 @@
-from PySide2.QtWidgets import QLabel
+from PySide2.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout
 
 
 def set_factors(self, factors):
@@ -15,13 +15,15 @@ def set_factors(self, factors):
         deleted_columns_count = 10 - self.table_layout.count()
 
         for i in reversed(range(deleted_columns_count)):
-
-            self.columns[::-1][i].addWidget(QLabel(f'{abs(i - 9)}'))
-            self.columns[::-1][i].addWidget(self.rows_edit_x[::-1][i])
-            self.columns[::-1][i].addWidget(self.rows_edit_d1[::-1][i])
+            layout = QHBoxLayout()
+            layout.addWidget(QLabel(f'{abs(i - 9)}'))
+            layout.addWidget(self.rows_edit_x[::-1][i])
+            layout.addWidget(self.rows_edit_d1[::-1][i])
 
             if self.levels == 5:
-                self.columns[::-1][i].addWidget(self.rows_edit_d2[::-1][i])
+                layout.addWidget(self.rows_edit_d2[::-1][i])
+
+            self.columns[::-1][i].addLayout(layout)
 
             self.table_layout.addLayout(self.columns[::-1][i])
     else:
