@@ -1,9 +1,10 @@
 import PySide2
-from PySide2.QtWidgets import QGroupBox
+from PySide2.QtWidgets import QGroupBox, QLabel, QHBoxLayout, QVBoxLayout
 from dataclasses import dataclass
 
 from controllers.main_window.elements.qlines import set_factors, set_experiments
-from layouts.utils import get_qlabel, get_qline, set_size, get_validator, get_hbox, get_vbox, set_style_sheet
+from layouts.utils import get_qlabel, get_qline, set_size, get_validator, get_hbox, get_vbox, set_style_sheet, \
+    get_elements
 
 FACTORS_REGEX = r"^[2-9]$"
 EXPERIMENTS_REGEX = r"^\d{3}$"
@@ -19,19 +20,20 @@ RANGE_LABELS_COLOR = 'color: grey'
 
 @dataclass
 class Layouts:
-    experiments_labels_layout: PySide2.QtWidgets.QHBoxLayout
-    factors_labels_layout: PySide2.QtWidgets.QHBoxLayout
-    labels_layout: PySide2.QtWidgets.QVBoxLayout
-    lines_layout: PySide2.QtWidgets.QVBoxLayout
-    main_inner_layout: PySide2.QtWidgets.QHBoxLayout
+    experiments_labels_layout: QHBoxLayout
+    factors_labels_layout: QHBoxLayout
+    labels_layout: QVBoxLayout
+    lines_layout: QVBoxLayout
+    main_inner_layout: QHBoxLayout
+    main_layout: QGroupBox
 
 
 @dataclass
 class Labels:
-    factors_label: PySide2.QtWidgets.QLabel
-    factors_range_label: PySide2.QtWidgets.QLabel
-    experiments_label: PySide2.QtWidgets.QLabel
-    experiments_range_label: PySide2.QtWidgets.QLabel
+    factors_label: QLabel
+    factors_range_label: QLabel
+    experiments_label: QLabel
+    experiments_range_label: QLabel
 
 
 @dataclass
@@ -45,10 +47,9 @@ class Lines:
 
 class ParametersLayout:
     def __init__(self):
-        self.main_layout = QGroupBox()
-        self.layouts = self.get_layouts()
+        self.layouts = get_elements(Layouts)
+        self.lines = get_elements(Lines)
         self.labels = self.get_labels()
-        self.lines = self.get_lines()
 
         self.set_labels_color()
         self.set_lines_size()
@@ -57,24 +58,24 @@ class ParametersLayout:
         # TODO: remove self in handlers
         # self.connect_handler(lines)
 
-    def makeup(self, layouts, labels, lines):
-        layouts.experiments_labels_layout.addWidget(labels.experiments_label)
-        layouts.experiments_labels_layout.addWidget(labels.experiments_range_label)
+    def makeup(self):
+        self.layouts.experiments_labels_layout.addWidget(self.labels.experiments_label)
+        self.layouts.experiments_labels_layout.addWidget(self.labels.experiments_range_label)
 
-        layouts.factors_labels_layout.addWidget(labels.factors_label)
-        layouts.factors_labels_layout.addWidget(labels.factors_range_label)
+        self.layouts.factors_labels_layout.addWidget(self.labels.factors_label)
+        self.layouts.factors_labels_layout.addWidget(self.labels.factors_range_label)
 
-        layouts.labels_layout.addLayout(layouts.factors_labels_layout)
-        layouts.labels_layout.addLayout(layouts.experiments_labels_layout)
+        self.layouts.labels_layout.addLayout(self.layouts.factors_labels_layout)
+        self.layouts.labels_layout.addLayout(self.layouts.experiments_labels_layout)
 
-        layouts.lines_layout.addWidget(lines.factors)
-        layouts.lines_layout.addWidget(lines.experiments)
+        self.layouts.lines_layout.addWidget(self.lines.factors)
+        self.layouts.lines_layout.addWidget(self.lines.experiments)
 
-        layouts.main_inner_layout.addLayout(layouts.labels_layout)
-        layouts.main_inner_layout.addLayout(layouts.lines_layout)
+        self.layouts.main_inner_layout.addLayout(self.layouts.labels_layout)
+        self.layouts.main_inner_layout.addLayout(self.layouts.lines_layout)
 
-        self.main_layout.setLayout(layouts.main_inner_layout)
-        return self.main_layout
+        self.layouts.main_layout.setLayout(self.layouts.main_inner_layout)
+        return self.layouts.main_layout
 
     def set_lines_validators(self):
         factors_validator = get_validator(FACTORS_REGEX)
@@ -107,18 +108,3 @@ class ParametersLayout:
             factors_range_label=get_qlabel(FACTORS_LABEL_RANGE),
             experiments_label=get_qlabel(EXPERIMENTS_LABEL_TEXT),
             experiments_range_label=get_qlabel(EXPERIMENTS_LABEL_RANGE))
-
-    @staticmethod
-    def get_lines():
-        return Lines(
-            factors=get_qline(),
-            experiments=get_qline())
-
-    @staticmethod
-    def get_layouts():
-        return Layouts(
-            experiments_labels_layout=get_hbox(),
-            factors_labels_layout=get_hbox(),
-            labels_layout=get_vbox(),
-            lines_layout=get_vbox(),
-            main_inner_layout=get_hbox())
