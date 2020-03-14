@@ -7,6 +7,7 @@ from PySide2.QtWidgets import QGroupBox, QLineEdit, QRadioButton, QLabel, QVBoxL
 from controllers.main_window.elements.buttons import planning_table, set_buttons_disabled
 from controllers.main_window.elements.qlines import set_factors, set_experiments, set_disabled
 from controllers.main_window.elements.radios import set_level
+from layouts.experiment_layout import ExperimentLayout
 from layouts.levels_layout import LevelsLayout
 from layouts.parameters_layout import ParametersLayout
 
@@ -16,7 +17,8 @@ def init_layouts(self):
 
     enter_parameters_layout = ParametersLayout().main_layout
     choose_levels_layout = LevelsLayout().main_layout
-    parameters_table_layout = _init_parameters_table_layout(self)
+    parameters_table_layout = ExperimentLayout().main_layout
+    # parameters_table_layout = _init_parameters_table_layout(self)
     go_next_layout = _init_go_next_layout(self)
 
     table = QTableWidget()
@@ -139,7 +141,7 @@ def _init_parameters_table_layout(self):
     title_layout.addWidget(QLabel("Данные об эксперименте\n"))
     title_layout.setAlignment(QtCore.Qt.AlignCenter)
 
-    self.columns = [QVBoxLayout() for _ in range(10)]
+    self.columns = [QHBoxLayout() for _ in range(10)]
     self.rows_edit_x = [QLineEdit() for _ in range(9)]
     self.rows_edit_d1 = [QLineEdit() for _ in range(9)]
     self.rows_edit_d2 = [QLineEdit() for _ in range(9)]

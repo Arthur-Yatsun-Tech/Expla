@@ -3,8 +3,7 @@ from PySide2.QtWidgets import QGroupBox, QLabel, QHBoxLayout, QVBoxLayout
 from dataclasses import dataclass
 
 from controllers.main_window.elements.qlines import set_factors, set_experiments
-from layouts.utils import get_qlabel, get_qline, set_size, get_validator, get_hbox, get_vbox, set_style_sheet, \
-    get_elements
+from layouts.utils import set_size, get_validator, set_style_sheet, get_elements
 
 FACTORS_REGEX = r"^[2-9]$"
 EXPERIMENTS_REGEX = r"^\d{3}$"
@@ -47,12 +46,14 @@ class Lines:
 
 class ParametersLayout:
     def __init__(self):
+        super().__init__()
         self.main_layout = self.build_main_layout()
 
     def build_main_layout(self):
         layouts = get_elements(Layouts)
         lines = get_elements(Lines)
-        labels = self.get_labels()
+        labels = get_elements(Labels, [FACTORS_LABEL_TEXT, FACTORS_LABEL_RANGE,
+                                       EXPERIMENTS_LABEL_TEXT, EXPERIMENTS_LABEL_RANGE])
 
         self.set_labels_color(labels)
         self.set_lines_size(lines)
@@ -108,11 +109,3 @@ class ParametersLayout:
     def set_lines_size(lines):
         for line in lines.get_lines():
             set_size(line, LINES_SIZE)
-
-    @staticmethod
-    def get_labels():
-        return Labels(
-            factors_label=get_qlabel(FACTORS_LABEL_TEXT),
-            factors_range_label=get_qlabel(FACTORS_LABEL_RANGE),
-            experiments_label=get_qlabel(EXPERIMENTS_LABEL_TEXT),
-            experiments_range_label=get_qlabel(EXPERIMENTS_LABEL_RANGE))

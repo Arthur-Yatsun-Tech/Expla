@@ -7,9 +7,16 @@ from PySide2.QtGui import QRegExpValidator
 from PySide2.QtWidgets import QLabel, QLineEdit, QHBoxLayout, QVBoxLayout, QRadioButton
 
 
-def get_elements(dataclass):
-    return dataclass(
-        **{name: type_() for name, type_ in dataclass.__annotations__.items()})
+def get_elements(dataclass, arguments=None):
+    elements = {}
+    for name, type_ in dataclass.__annotations__.items():
+        try:
+            argument = arguments.pop(0)
+        except (AttributeError, IndexError):
+            argument = None
+        elements[name] = type_(argument)
+
+    return dataclass(**elements)
 
 
 def set_size(element: PySide2.QtWidgets, size: Tuple[int, int]):

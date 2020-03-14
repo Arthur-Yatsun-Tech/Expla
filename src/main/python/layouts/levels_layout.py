@@ -5,6 +5,9 @@ from dataclasses import dataclass
 from controllers.main_window.elements.radios import set_level
 from layouts.utils import get_qradio, get_qlabel, set_alignment, get_elements
 
+TITLE = 'Количество уровней\n варьирования'
+RADIOS_NAMES = ['2', '3', '5']
+
 
 @dataclass
 class Layouts:
@@ -30,8 +33,8 @@ class LevelsLayout:
         self.main_layout = self.build_main_layout()
 
     def build_main_layout(self):
-        labels = self.get_labels()
-        radios = self.get_radios()
+        labels = get_elements(Labels, [TITLE])
+        radios = get_elements(Radios, RADIOS_NAMES)
         layouts = get_elements(Layouts)
 
         self.set_elements_alignment(labels, layouts)
@@ -64,16 +67,3 @@ class LevelsLayout:
             lambda: set_level(self, radios.level3.text()))
         radios.level2.clicked.connect(
             lambda: set_level(self, radios.level2.text()))
-
-    @staticmethod
-    def get_radios():
-        return Radios(
-            level2=get_qradio('2'),
-            level3=get_qradio('3'),
-            level5=get_qradio('5'))
-
-    @staticmethod
-    def get_labels():
-        return Labels(
-            get_qlabel('Количество уровней\n варьирования'))
-
