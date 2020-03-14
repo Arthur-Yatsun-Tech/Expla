@@ -1,10 +1,6 @@
 from typing import Tuple
 
-import PySide2
-from PySide2 import QtCore
-from PySide2.QtCore import QRegExp
-from PySide2.QtGui import QRegExpValidator
-from PySide2.QtWidgets import QLabel, QLineEdit, QHBoxLayout, QVBoxLayout, QRadioButton
+from PySide2 import QtCore, QtWidgets, QtGui
 
 
 def get_elements(dataclass, arguments=None):
@@ -19,7 +15,7 @@ def get_elements(dataclass, arguments=None):
     return dataclass(**elements)
 
 
-def set_size(element: PySide2.QtWidgets, size: Tuple[int, int]):
+def set_size(element: QtWidgets, size: Tuple[int, int]):
     """Set size to the element
 
     :param element: any widget or layout
@@ -28,7 +24,7 @@ def set_size(element: PySide2.QtWidgets, size: Tuple[int, int]):
     element.setFixedSize(*size)
 
 
-def set_style_sheet(element: PySide2.QtWidgets, style_params: str):
+def set_style_sheet(element: QtWidgets, style_params: str):
     """
 
     :param element:
@@ -37,32 +33,10 @@ def set_style_sheet(element: PySide2.QtWidgets, style_params: str):
     element.setStyleSheet(style_params)
 
 
-def set_alignment(element: PySide2.QtWidgets, alignment: PySide2.QtCore.Qt):
+def set_alignment(element: QtWidgets, alignment: QtCore.Qt):
     element.setAlignment(alignment)
-
-
-def get_qlabel(text: str = None):
-    """Create QLabel"""
-    return QLabel(text)
-
-
-def get_qline():
-    """Create QLineEdit"""
-    return QLineEdit()
-
-
-def get_hbox():
-    return QHBoxLayout()
-
-
-def get_qradio(text: str = None):
-    return QRadioButton(text)
-
-
-def get_vbox():
-    return QVBoxLayout()
 
 
 def get_validator(expression: str):
     """"""
-    return QRegExpValidator(QRegExp(expression))
+    return QtGui.QRegExpValidator(QtCore.QRegExp(expression))
