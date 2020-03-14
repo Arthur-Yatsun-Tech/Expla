@@ -97,6 +97,9 @@ class ExperimentLayout:
         column2_elements = get_elements(SecondCol, [DELTA1])
         column3_elements = get_elements(ThirdCol, [DELTA2])
 
+        # TODO: create and add validators
+        # TODO: align title
+
         return self.makeup(
             layouts,
             labels,

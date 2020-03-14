@@ -7,9 +7,11 @@ from PySide2.QtWidgets import QGroupBox, QLineEdit, QRadioButton, QLabel, QVBoxL
 from controllers.main_window.elements.buttons import planning_table, set_buttons_disabled
 from controllers.main_window.elements.qlines import set_factors, set_experiments, set_disabled
 from controllers.main_window.elements.radios import set_level
+from layouts.controllers_layout import ControllersLayout
 from layouts.experiment_layout import ExperimentLayout
 from layouts.levels_layout import LevelsLayout
 from layouts.parameters_layout import ParametersLayout
+from layouts.tabs_layouts.base_tab_layout import BaseTabLayout
 
 
 def init_layouts(self):
@@ -18,8 +20,9 @@ def init_layouts(self):
     enter_parameters_layout = ParametersLayout().main_layout
     choose_levels_layout = LevelsLayout().main_layout
     parameters_table_layout = ExperimentLayout().main_layout
+    go_next_layout = ControllersLayout().main_layout
     # parameters_table_layout = _init_parameters_table_layout(self)
-    go_next_layout = _init_go_next_layout(self)
+    # go_next_layout = _init_go_next_layout(self)
 
     table = QTableWidget()
     table.setRowCount(100)
@@ -38,7 +41,7 @@ def init_layouts(self):
     tabs.addTab(tab3, 'Графики')
     tabs.addTab(tab4, 'Регрессионное уравнение')
 
-
+    tabs = BaseTabLayout().main_layout
     main_layout = QGridLayout()
     main_layout.addWidget(enter_parameters_layout, 1, 0)
     main_layout.addWidget(choose_levels_layout, 2, 0)
@@ -192,6 +195,6 @@ def _init_go_next_layout(self):
     main_layout.addWidget(self.open_table_button)
     # main_layout.addLayout(layout1)
 
-    set_buttons_disabled(self, mode=False)
+    # set_buttons_disabled(self, mode=False)
     go_next_layout.setLayout(main_layout)
     return go_next_layout
