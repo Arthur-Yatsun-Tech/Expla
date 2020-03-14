@@ -60,7 +60,6 @@ class ParametersLayout:
 
         # TODO: remove self in handlers
         # self.connect_handler(lines)
-
         return self.makeup(layouts, labels, lines)
 
     @staticmethod

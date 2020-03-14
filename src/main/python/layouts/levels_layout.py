@@ -27,27 +27,43 @@ class Radios:
 
 class LevelsLayout:
     def __init__(self):
-        self.labels = self.get_labels()
-        self.radios = self.get_radios()
-        self.layouts = get_elements(Layouts)
+        self.main_layout = self.build_main_layout()
 
-        self.set_elements_alignment()
-        self.connect_handler()
+    def build_main_layout(self):
+        labels = self.get_labels()
+        radios = self.get_radios()
+        layouts = get_elements(Layouts)
 
-    def makeup(self):
-        pass
+        self.set_elements_alignment(labels, layouts)
+        # TODO: connection
+        # self.connect_handler(radios)
 
-    def set_elements_alignment(self):
-        set_alignment(self.labels.levels_label, Qt.AlignCenter)
-        set_alignment(self.layouts.radio_layout, Qt.AlignRight)
+        return self.makeup(layouts, radios, labels)
 
-    def connect_handler(self):
-        self.radios.level5.clicked.connect(
-            lambda: set_level(self, self.radios.level5.text()))
-        self.radios.level3.clicked.connect(
-            lambda: set_level(self, self.radios.level3.text()))
-        self.radios.level2.clicked.connect(
-            lambda: set_level(self, self.radios.level2.text()))
+    @staticmethod
+    def makeup(layouts, radios, labels):
+        layouts.radio_layout.addWidget(radios.level2)
+        layouts.radio_layout.addWidget(radios.level3)
+        layouts.radio_layout.addWidget(radios.level5)
+
+        layouts.main_inner_layout.addWidget(labels.levels_label)
+        layouts.main_inner_layout.addLayout(layouts.radio_layout)
+
+        layouts.main_layout.setLayout(layouts.main_inner_layout)
+        return layouts.main_layout
+
+    @staticmethod
+    def set_elements_alignment(labels, layouts):
+        set_alignment(labels.levels_label, Qt.AlignCenter)
+        set_alignment(layouts.radio_layout, Qt.AlignRight)
+
+    def connect_handler(self, radios):
+        radios.level5.clicked.connect(
+            lambda: set_level(self, radios.level5.text()))
+        radios.level3.clicked.connect(
+            lambda: set_level(self, radios.level3.text()))
+        radios.level2.clicked.connect(
+            lambda: set_level(self, radios.level2.text()))
 
     @staticmethod
     def get_radios():
