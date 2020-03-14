@@ -13,7 +13,7 @@ from layouts.parameters_layout import ParametersLayout
 def init_layouts(self):
     widget = QWidget()
 
-    enter_parameters_layout = ParametersLayout().makeup()
+    enter_parameters_layout = ParametersLayout().main_layout
     choose_levels_layout = _init_levels_layout(self)
     parameters_table_layout = _init_parameters_table_layout(self)
     go_next_layout = _init_go_next_layout(self)

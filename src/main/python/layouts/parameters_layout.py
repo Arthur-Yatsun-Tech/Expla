@@ -47,46 +47,54 @@ class Lines:
 
 class ParametersLayout:
     def __init__(self):
-        self.layouts = get_elements(Layouts)
-        self.lines = get_elements(Lines)
-        self.labels = self.get_labels()
+        self.main_layout = self.build_main_layout()
 
-        self.set_labels_color()
-        self.set_lines_size()
-        self.set_lines_validators()
+    def build_main_layout(self):
+        layouts = get_elements(Layouts)
+        lines = get_elements(Lines)
+        labels = self.get_labels()
+
+        self.set_labels_color(labels)
+        self.set_lines_size(lines)
+        self.set_lines_validators(lines)
 
         # TODO: remove self in handlers
         # self.connect_handler(lines)
 
-    def makeup(self):
-        self.layouts.experiments_labels_layout.addWidget(self.labels.experiments_label)
-        self.layouts.experiments_labels_layout.addWidget(self.labels.experiments_range_label)
+        return self.makeup(layouts, labels, lines)
 
-        self.layouts.factors_labels_layout.addWidget(self.labels.factors_label)
-        self.layouts.factors_labels_layout.addWidget(self.labels.factors_range_label)
+    @staticmethod
+    def makeup(layouts, labels, lines):
+        layouts.experiments_labels_layout.addWidget(labels.experiments_label)
+        layouts.experiments_labels_layout.addWidget(labels.experiments_range_label)
 
-        self.layouts.labels_layout.addLayout(self.layouts.factors_labels_layout)
-        self.layouts.labels_layout.addLayout(self.layouts.experiments_labels_layout)
+        layouts.factors_labels_layout.addWidget(labels.factors_label)
+        layouts.factors_labels_layout.addWidget(labels.factors_range_label)
 
-        self.layouts.lines_layout.addWidget(self.lines.factors)
-        self.layouts.lines_layout.addWidget(self.lines.experiments)
+        layouts.labels_layout.addLayout(layouts.factors_labels_layout)
+        layouts.labels_layout.addLayout(layouts.experiments_labels_layout)
 
-        self.layouts.main_inner_layout.addLayout(self.layouts.labels_layout)
-        self.layouts.main_inner_layout.addLayout(self.layouts.lines_layout)
+        layouts.lines_layout.addWidget(lines.factors)
+        layouts.lines_layout.addWidget(lines.experiments)
 
-        self.layouts.main_layout.setLayout(self.layouts.main_inner_layout)
-        return self.layouts.main_layout
+        layouts.main_inner_layout.addLayout(layouts.labels_layout)
+        layouts.main_inner_layout.addLayout(layouts.lines_layout)
 
-    def set_lines_validators(self):
+        layouts.main_layout.setLayout(layouts.main_inner_layout)
+        return layouts.main_layout
+
+    @staticmethod
+    def set_lines_validators(lines):
         factors_validator = get_validator(FACTORS_REGEX)
         experiments_validator = get_validator(EXPERIMENTS_REGEX)
 
-        self.lines.factors.setValidator(factors_validator)
-        self.lines.experiments.setValidator(experiments_validator)
+        lines.factors.setValidator(factors_validator)
+        lines.experiments.setValidator(experiments_validator)
 
-    def set_labels_color(self):
-        set_style_sheet(self.labels.experiments_range_label, RANGE_LABELS_COLOR)
-        set_style_sheet(self.labels.factors_range_label, RANGE_LABELS_COLOR)
+    @staticmethod
+    def set_labels_color(labels):
+        set_style_sheet(labels.experiments_range_label, RANGE_LABELS_COLOR)
+        set_style_sheet(labels.factors_range_label, RANGE_LABELS_COLOR)
 
     def connect_handler(self, lines):
         lines.factors.textEdited.connect(
@@ -97,8 +105,9 @@ class ParametersLayout:
             lambda: set_experiments(
                 self, lines.experiments.text()))
 
-    def set_lines_size(self):
-        for line in self.lines.get_lines():
+    @staticmethod
+    def set_lines_size(lines):
+        for line in lines.get_lines():
             set_size(line, LINES_SIZE)
 
     @staticmethod
