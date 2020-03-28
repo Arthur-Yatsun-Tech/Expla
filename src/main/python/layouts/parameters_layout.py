@@ -1,8 +1,8 @@
-import PySide2
-from PySide2.QtWidgets import QGroupBox, QLabel, QHBoxLayout, QVBoxLayout
+from PySide2.QtWidgets import QGroupBox, QLabel, QHBoxLayout, QVBoxLayout, QLineEdit
 from dataclasses import dataclass
 
 from controllers.main_window.elements.qlines import set_factors, set_experiments
+from layouts.base import BaseLayout
 from layouts.utils import set_size, get_validator, set_style_sheet, get_elements
 
 FACTORS_REGEX = r"^[2-9]$"
@@ -37,16 +37,15 @@ class Labels:
 
 @dataclass
 class Lines:
-    factors: PySide2.QtWidgets.QLineEdit
-    experiments: PySide2.QtWidgets.QLineEdit
+    factors: QLineEdit
+    experiments: QLineEdit
 
     def get_lines(self):
         return [self.factors, self.experiments]
 
 
-class ParametersLayout:
+class ParametersLayout(BaseLayout):
     def __init__(self):
-        super().__init__()
         self.main_layout = self.build_main_layout()
 
     def build_main_layout(self):
@@ -60,7 +59,7 @@ class ParametersLayout:
         self.set_lines_validators(lines)
 
         # TODO: remove self in handlers
-        # self.connect_handler(lines)
+        self.connect_handler(lines)
         return self.makeup(layouts, labels, lines)
 
     @staticmethod
@@ -99,11 +98,14 @@ class ParametersLayout:
     def connect_handler(self, lines):
         lines.factors.textEdited.connect(
             lambda: set_factors(
-                self, lines.factors.text()))
+                self.main_layout,
+                self.experiment,
+                lines.factors.text()))
 
         lines.experiments.textEdited.connect(
             lambda: set_experiments(
-                self, lines.experiments.text()))
+                self.experiment,
+                lines.experiments.text()))
 
     @staticmethod
     def set_lines_size(lines):

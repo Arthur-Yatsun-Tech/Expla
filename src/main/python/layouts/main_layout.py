@@ -1,6 +1,7 @@
 from PySide2.QtWidgets import QGridLayout, QWidget
 from dataclasses import dataclass
 
+from layouts.base import BaseLayout
 from layouts.controllers_layout import ControllersLayout
 from layouts.experiment_layout import ExperimentLayout
 from layouts.levels_layout import LevelsLayout
@@ -15,7 +16,7 @@ class Layouts:
     main_layout: QWidget
 
 
-class BaseLayout:
+class MainLayout(BaseLayout):
     def __init__(self):
         self.main_layout = self.build_result()
 

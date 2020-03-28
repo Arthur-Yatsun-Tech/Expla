@@ -3,6 +3,7 @@ from PySide2.QtWidgets import QGroupBox, QRadioButton, QLabel, QVBoxLayout, QHBo
 from dataclasses import dataclass
 
 from controllers.main_window.elements.radios import set_level
+from layouts.base import BaseLayout
 from layouts.utils import set_alignment, get_elements
 
 TITLE = 'Количество уровней\n варьирования'
@@ -28,7 +29,7 @@ class Radios:
     level5: QRadioButton
 
 
-class LevelsLayout:
+class LevelsLayout(BaseLayout):
     def __init__(self):
         self.main_layout = self.build_main_layout()
 

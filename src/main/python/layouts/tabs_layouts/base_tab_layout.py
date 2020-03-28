@@ -1,6 +1,7 @@
 from PySide2.QtWidgets import QTabWidget, QWidget
 from dataclasses import dataclass
 
+from layouts.base import BaseLayout
 from layouts.tabs_layouts.table_layout import TableLayout
 from layouts.utils import get_elements
 
@@ -9,6 +10,7 @@ CRITERIA_TITLE = 'Критерии'
 REGRESSION_COEFS_TITLE = 'Коэфициенты регрессии'
 PLOTS_TITLE = 'Графики'
 REGRESSION_EQUATION_TITLE = 'Регрессионное уравнение'
+
 
 @dataclass
 class Tabs:
@@ -19,7 +21,7 @@ class Tabs:
     regression_equation_tab: QWidget
 
 
-class BaseTabLayout:
+class BaseTabLayout(BaseLayout):
     def __init__(self):
         self.main_layout = self.build_main_layout()
 

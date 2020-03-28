@@ -1,9 +1,11 @@
 from PySide2.QtWidgets import QVBoxLayout, QGroupBox, QPushButton
 from dataclasses import dataclass
 
+from layouts.base import BaseLayout
 from layouts.utils import get_elements
 
 CREATE_TABLE_BUTTON_TEXT = 'Создать таблицу эксперимента'
+
 
 @dataclass
 class Layouts:
@@ -16,7 +18,7 @@ class Buttons:
     create_table_button: QPushButton
 
 
-class ControllersLayout:
+class ControllersLayout(BaseLayout):
     def __init__(self):
         self.main_layout = self.build_main_layout()
 

@@ -1,6 +1,7 @@
 from PySide2.QtWidgets import QTableWidget
 from dataclasses import dataclass
 
+from layouts.base import BaseLayout
 from layouts.utils import get_elements
 
 ROWS = 100
@@ -14,7 +15,7 @@ class Table:
     table: QTableWidget
 
 
-class TableLayout:
+class TableLayout(BaseLayout):
     def __init__(self):
         self.main_layout = self.build_main_layout()
 

@@ -1,7 +1,11 @@
+from PySide2.QtCore import Qt
 from PySide2.QtWidgets import QGroupBox, QLabel, QLineEdit, QHBoxLayout, QVBoxLayout
 from dataclasses import dataclass, fields
 
-from layouts.utils import get_elements
+from layouts.base import BaseLayout
+from layouts.utils import get_elements, set_alignment, get_validator
+
+LINES_REGEX = r"[-+]?\d*\.\d+|\d+"
 
 TITLE = 'Числовые данные эксперимента'
 X = 'x'
@@ -85,7 +89,7 @@ class ThirdCol:
     line39: QLineEdit
 
 
-class ExperimentLayout:
+class ExperimentLayout(BaseLayout):
     def __init__(self):
         self.main_layout = self.build_main_layout()
 
@@ -97,8 +101,12 @@ class ExperimentLayout:
         column2_elements = get_elements(SecondCol, [DELTA1])
         column3_elements = get_elements(ThirdCol, [DELTA2])
 
-        # TODO: create and add validators
-        # TODO: align title
+        self.set_validators(column0_elements)
+        self.set_validators(column1_elements)
+        self.set_validators(column2_elements)
+        self.set_validators(column3_elements)
+
+        self.set_alignment(labels)
 
         return self.makeup(
             layouts,
@@ -131,3 +139,18 @@ class ExperimentLayout:
         return [layout.addWidget(
                     getattr(elements, element.name))
                     for element in fields(elements)]
+
+    @staticmethod
+    def set_alignment(labels):
+        set_alignment(labels.title_label, Qt.AlignCenter)
+
+    @staticmethod
+    def set_validators(lines):
+        only_numbers = get_validator(LINES_REGEX)
+
+        for field in fields(lines):
+            # avoid widgets with no setValidator method
+            try:
+                getattr(lines, field.name).setValidator(only_numbers)
+            except AttributeError:
+                pass
