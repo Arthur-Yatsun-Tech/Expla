@@ -7,15 +7,22 @@ from PySide2.QtWidgets import QGroupBox, QLineEdit, QRadioButton, QLabel, QVBoxL
 from controllers.main_window.elements.buttons import planning_table, set_buttons_disabled
 from controllers.main_window.elements.qlines import set_factors, set_experiments, set_disabled
 from controllers.main_window.elements.radios import set_level
+from layouts.controllers_layout import ControllersLayout
+from layouts.experiment_layout import ExperimentLayout
+from layouts.levels_layout import LevelsLayout
+from layouts.parameters_layout import ParametersLayout
+from layouts.tabs_layouts.base_tab_layout import BaseTabLayout
 
 
 def init_layouts(self):
     widget = QWidget()
 
-    enter_parameters_layout = _init_parameters_layout(self)
-    choose_levels_layout = _init_levels_layout(self)
-    parameters_table_layout = _init_parameters_table_layout(self)
-    go_next_layout = _init_go_next_layout(self)
+    enter_parameters_layout = ParametersLayout().main_layout
+    choose_levels_layout = LevelsLayout().main_layout
+    parameters_table_layout = ExperimentLayout().main_layout
+    go_next_layout = ControllersLayout().main_layout
+    # parameters_table_layout = _init_parameters_table_layout(self)
+    # go_next_layout = _init_go_next_layout(self)
 
     table = QTableWidget()
     table.setRowCount(100)
@@ -34,7 +41,7 @@ def init_layouts(self):
     tabs.addTab(tab3, 'Графики')
     tabs.addTab(tab4, 'Регрессионное уравнение')
 
-
+    tabs = BaseTabLayout().main_layout
     main_layout = QGridLayout()
     main_layout.addWidget(enter_parameters_layout, 1, 0)
     main_layout.addWidget(choose_levels_layout, 2, 0)
@@ -110,9 +117,9 @@ def _init_levels_layout(self):
     self.level_3.clicked.connect(lambda: set_level(self, self.level_3.text()))
     self.level_2.clicked.connect(lambda: set_level(self, self.level_2.text()))
 
-    self.level_5.setEnabled(False)
-    self.level_3.setEnabled(False)
-    self.level_2.setEnabled(False)
+    # self.level_5.setEnabled(False)
+    # self.level_3.setEnabled(False)
+    # self.level_2.setEnabled(False)
 
     radio_group_layout = QVBoxLayout()
     radio_group_layout.setAlignment(QtCore.Qt.AlignRight)
@@ -137,7 +144,7 @@ def _init_parameters_table_layout(self):
     title_layout.addWidget(QLabel("Данные об эксперименте\n"))
     title_layout.setAlignment(QtCore.Qt.AlignCenter)
 
-    self.columns = [QVBoxLayout() for _ in range(10)]
+    self.columns = [QHBoxLayout() for _ in range(10)]
     self.rows_edit_x = [QLineEdit() for _ in range(9)]
     self.rows_edit_d1 = [QLineEdit() for _ in range(9)]
     self.rows_edit_d2 = [QLineEdit() for _ in range(9)]
@@ -161,7 +168,7 @@ def _init_parameters_table_layout(self):
 
     self.rows_edit_x[0].textEdited.connect(lambda: set_buttons_disabled(self, mode=True))
 
-    set_disabled(self, mode=False)
+    # set_disabled(self, mode=False)
     [self.table_layout.addLayout(self.columns[column]) for column in range(10)]
 
     main_layout.addLayout(title_layout)
@@ -188,6 +195,6 @@ def _init_go_next_layout(self):
     main_layout.addWidget(self.open_table_button)
     # main_layout.addLayout(layout1)
 
-    set_buttons_disabled(self, mode=False)
+    # set_buttons_disabled(self, mode=False)
     go_next_layout.setLayout(main_layout)
     return go_next_layout

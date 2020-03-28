@@ -3,7 +3,7 @@ import sys
 from PySide2.QtWidgets import QMainWindow
 from fbs_runtime.application_context.PySide2 import ApplicationContext
 
-import controllers.main_window.layouts as layouts
+from layouts.main_layout import MainLayout
 
 
 class MainWindow(QMainWindow):
@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
 
         self.showMaximized()
 
-        widget = layouts.init_layouts(self)
+        widget = MainLayout().main_layout
         self.setCentralWidget(widget)
 
 
