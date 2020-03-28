@@ -2,7 +2,7 @@ from typing import Tuple
 
 from PySide2 import QtCore, QtWidgets, QtGui
 
-
+ 
 def get_elements(dataclass, arguments=None):
     elements = {}
     for name, type_ in dataclass.__annotations__.items():
