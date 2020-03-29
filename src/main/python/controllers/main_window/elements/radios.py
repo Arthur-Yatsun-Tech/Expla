@@ -4,6 +4,7 @@ from controllers.main_window.elements.qlines import set_disabled
 
 
 def set_level(self, text):
+    print(text)
     set_disabled(self, mode=True)
     self.levels = int(text)
 

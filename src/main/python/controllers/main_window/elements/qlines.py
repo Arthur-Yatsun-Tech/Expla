@@ -1,20 +1,37 @@
 import time
 
-from PySide2.QtWidgets import QLineEdit, QVBoxLayout
+from PySide2.QtWidgets import QLineEdit, QVBoxLayout, QLabel
+
+X1 = slice(9)
+D1 = slice(9, 18)
+D2 = slice(18, 28)
 
 
 def set_factors(main_layout, experiment, factors):
     main_window = main_layout.parent()
-    children = main_window.children()[3].findChildren(QLineEdit)
-    children[0].setParent(None)
-    time.sleep(3)
-    qvbox = main_window.children()[3].findChildren(QVBoxLayout)
+    experiment_cells = main_window.children()[3].findChildren(QLineEdit)
+    experiment_labels = main_window.children()[3].findChildren(QLabel)
+
+    layouts = main_window.children()[3].findChildren(QVBoxLayout)
+
+    print(layouts[0].findChildren(QLineEdit))
+    x1 = experiment_cells[X1]
+    delta1 = experiment_cells[D1]
+    delta2 = experiment_cells[D2]
+    # children[0].setParent(None)
+
+    # for i in x1:
+    #     i.setParent(None)
+    # if factors == '':
+    #     for i in x1:
+    #         i.setParent(main_layout)
+
+    # qvbox = main_window.children()[3].findChildren(QVBoxLayout)
     # qvbox[2].addWidget(children[0])
 
     # for child in children:
     #     print(child.parent())
     # # print(main_window.count())
-
 
     experiment.factors = factors
     # self.level_5.setEnabled(True)

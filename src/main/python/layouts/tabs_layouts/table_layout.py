@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from layouts.base import BaseLayout
 from layouts.utils import get_elements
 
-ROWS = 100
+ROWS = 1000
 COLUMNS = 100
 
 COLUMN_WIDTH = 50

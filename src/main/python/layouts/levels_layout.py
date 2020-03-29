@@ -2,6 +2,7 @@ from PySide2.QtCore import Qt
 from PySide2.QtWidgets import QGroupBox, QRadioButton, QLabel, QVBoxLayout, QHBoxLayout
 from dataclasses import dataclass
 
+from controllers.controllers import disable_experiments_cells_by_level
 from controllers.main_window.elements.radios import set_level
 from layouts.base import BaseLayout
 from layouts.utils import set_alignment, get_elements
@@ -40,7 +41,7 @@ class LevelsLayout(BaseLayout):
 
         self.set_elements_alignment(labels, layouts)
         # TODO: connection
-        # self.connect_handler(radios)
+        self.connect_handler(radios)
 
         return self.makeup(layouts, radios, labels)
 
@@ -63,8 +64,17 @@ class LevelsLayout(BaseLayout):
 
     def connect_handler(self, radios):
         radios.level5.clicked.connect(
-            lambda: set_level(self, radios.level5.text()))
+            lambda: disable_experiments_cells_by_level(
+                self.main_layout,
+                self.experiment,
+                radios.level5.text()))
         radios.level3.clicked.connect(
-            lambda: set_level(self, radios.level3.text()))
+            lambda: disable_experiments_cells_by_level(
+                self.main_layout,
+                self.experiment,
+                radios.level3.text()))
         radios.level2.clicked.connect(
-            lambda: set_level(self, radios.level2.text()))
+            lambda: disable_experiments_cells_by_level(
+                self.main_layout,
+                self.experiment,
+                radios.level2.text()))

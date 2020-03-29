@@ -1,7 +1,7 @@
 from PySide2.QtWidgets import QGroupBox, QLabel, QHBoxLayout, QVBoxLayout, QLineEdit
 from dataclasses import dataclass
 
-from controllers.main_window.elements.qlines import set_factors, set_experiments
+from controllers.controllers import disable_experiments_cells_by_factor, set_count_of_experiments
 from layouts.base import BaseLayout
 from layouts.utils import set_size, get_validator, set_style_sheet, get_elements
 
@@ -58,7 +58,6 @@ class ParametersLayout(BaseLayout):
         self.set_lines_size(lines)
         self.set_lines_validators(lines)
 
-        # TODO: remove self in handlers
         self.connect_handler(lines)
         return self.makeup(layouts, labels, lines)
 
@@ -82,6 +81,17 @@ class ParametersLayout(BaseLayout):
         layouts.main_layout.setLayout(layouts.main_inner_layout)
         return layouts.main_layout
 
+    def connect_handler(self, lines):
+        lines.factors.textEdited.connect(
+            lambda: disable_experiments_cells_by_factor(
+                self.main_layout,
+                self.experiment,
+                lines.factors.text()))
+        lines.experiments.textEdited.connect(
+            lambda: set_count_of_experiments(
+                self.experiment,
+                lines.experiments.text()))
+
     @staticmethod
     def set_lines_validators(lines):
         factors_validator = get_validator(FACTORS_REGEX)
@@ -94,18 +104,6 @@ class ParametersLayout(BaseLayout):
     def set_labels_color(labels):
         set_style_sheet(labels.experiments_range_label, RANGE_LABELS_COLOR)
         set_style_sheet(labels.factors_range_label, RANGE_LABELS_COLOR)
-
-    def connect_handler(self, lines):
-        lines.factors.textEdited.connect(
-            lambda: set_factors(
-                self.main_layout,
-                self.experiment,
-                lines.factors.text()))
-
-        lines.experiments.textEdited.connect(
-            lambda: set_experiments(
-                self.experiment,
-                lines.experiments.text()))
 
     @staticmethod
     def set_lines_size(lines):
