@@ -1,7 +1,7 @@
-from PySide2.QtWidgets import QLineEdit, QGroupBox, QTableWidget, QTableWidgetItem
+from PySide2.QtWidgets import QGroupBox
 
-from controllers.utils import set_enabled, cast_parameter_to_int, get_experiment_cells, set_table_headers, \
-    get_experiment_table, set_experiment_plan
+from controllers.utils import set_enabled, cast_parameter_to_int, get_experiment_cells, \
+    get_experiment_table, set_experiment_plan, get_experiments_data, set_statistics, set_criteria
 from experiment import Experiment
 from table_planning.table_planer import TablePlanner
 
@@ -37,7 +37,6 @@ def disable_experiments_cells_by_level(current_layout, experiment, level):
 
     experiment_cells = get_experiment_cells(current_layout)
     d2_cells = experiment_cells[18:]
-    print(d2_cells)
 
     if experiment.levels != 5:
         list(map(
@@ -60,9 +59,19 @@ def set_count_of_experiments(experiment, count_of_experiments):
 
 def init_experiment_table_plan(current_layout, experiment):
     table = get_experiment_table(current_layout)
-    set_table_headers(table, experiment)
 
     plan = TablePlanner(experiment.levels, experiment.factors).create_table()
     set_experiment_plan(experiment, table, plan)
+
+
+def calculate(current_layout, experiment):
+    table = get_experiment_table(current_layout)
+    get_experiments_data(experiment, table)
+
+    statistics = experiment.calculate_statistics()
+    set_statistics(table, experiment, statistics)
+
+    set_criteria(current_layout, experiment, max(statistics['t']))
+
 
 

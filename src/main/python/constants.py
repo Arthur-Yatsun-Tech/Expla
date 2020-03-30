@@ -16,4 +16,4 @@ COLORS = [
 
 CURRENT_PARAMETER_COLOR = (241, 242, 242)
 
-VAR = ['', 'x̅', 'σ²', 'σ']
+VAR = ['', 'x̅', 'σ²', 'σ', 't']

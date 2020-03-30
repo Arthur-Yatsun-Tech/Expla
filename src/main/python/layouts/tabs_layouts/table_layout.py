@@ -33,5 +33,5 @@ class TableLayout(BaseLayout):
 
     @staticmethod
     def set_column_width(table, width, columns):
-        [table.setColumnWidth(i, 50) for i in range(100)]
+        [table.setColumnWidth(i, width) for i in range(columns)]
 

@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from layouts.base import BaseLayout
 from layouts.utils import get_elements
-from controllers.controllers import init_experiment_table_plan
+from controllers.controllers import init_experiment_table_plan, calculate
 
 CREATE_TABLE_BUTTON_TEXT = 'Создать таблицу эксперимента'
 START_CALCULATIONS_BUTTON_TEXT = 'Произвести расчеты'
@@ -43,3 +43,5 @@ class ControllersLayout(BaseLayout):
     def connect_handlers(self, buttons):
         buttons.create_table_button.clicked.connect(
             lambda: init_experiment_table_plan(self.main_layout, self.experiment))
+        buttons.start_calculations_button.clicked.connect(
+            lambda: calculate(self.main_layout, self.experiment))

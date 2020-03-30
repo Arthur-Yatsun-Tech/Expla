@@ -40,7 +40,6 @@ class LevelsLayout(BaseLayout):
         layouts = get_elements(Layouts)
 
         self.set_elements_alignment(labels, layouts)
-        # TODO: connection
         self.connect_handler(radios)
 
         return self.makeup(layouts, radios, labels)
