@@ -1,0 +1,49 @@
+from PySide2.QtWidgets import QGroupBox, QHBoxLayout, QLabel, QVBoxLayout
+from dataclasses import dataclass
+
+from layouts.base import BaseLayout
+from layouts.utils import get_elements
+
+STUDENT_NAME = 'Критерий Стьюдента'
+FISHER_NAME = 'Критерий Фишера'
+
+
+@dataclass
+class Layouts:
+    student_layout: QHBoxLayout
+    fisher_layout: QHBoxLayout
+    main_inner_layout: QVBoxLayout
+    main_layout: QGroupBox
+
+
+@dataclass
+class Labels:
+    student_name_label: QLabel
+    fisher_name_label: QLabel
+    student_result_label: QLabel
+    fisher_result_label: QLabel
+
+
+class CriteriaLayout(BaseLayout):
+    def __init__(self):
+        self.main_layout = self.build_main_layout()
+
+    def build_main_layout(self):
+        layouts = get_elements(Layouts)
+        labels = get_elements(Labels, [STUDENT_NAME, FISHER_NAME])
+
+        return self.makeup(layouts, labels)
+
+    @staticmethod
+    def makeup(layouts, labels):
+        layouts.student_layout.addWidget(labels.student_name_label)
+        layouts.student_layout.addWidget(labels.student_result_label)
+
+        layouts.fisher_layout.addWidget(labels.fisher_name_label)
+        layouts.fisher_layout.addWidget(labels.fisher_result_label)
+
+        layouts.main_inner_layout.addLayout(layouts.student_layout)
+        layouts.main_inner_layout.addLayout(layouts.fisher_layout)
+
+        layouts.main_layout.setLayout(layouts.main_inner_layout)
+        return layouts.main_layout

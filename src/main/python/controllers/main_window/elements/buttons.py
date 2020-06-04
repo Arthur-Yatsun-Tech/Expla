@@ -12,5 +12,5 @@ def planning_table(self):
 
 def set_buttons_disabled(self, mode=False):
     self.open_table_button.setEnabled(mode)
-    self.import_table_button.setEnabled(mode)
-    self.export_table_button.setEnabled(mode)
+    # self.import_table_button.setEnabled(mode)
+    # self.export_table_button.setEnabled(mode)

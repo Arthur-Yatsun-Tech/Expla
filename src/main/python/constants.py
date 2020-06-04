@@ -1,4 +1,3 @@
-
 COLORS = [
     (81, 153, 255),     # blue
     (229, 240, 255),    # light blue
@@ -16,3 +15,5 @@ COLORS = [
 ]
 
 CURRENT_PARAMETER_COLOR = (241, 242, 242)
+
+VAR = ['', 'x̅', 'σ²', 'σ', 't']
