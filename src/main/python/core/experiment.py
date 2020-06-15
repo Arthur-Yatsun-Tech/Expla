@@ -1,5 +1,5 @@
-from criteria import Criteria
-from statistics import Statistics
+from core.criteria import Criteria
+from core.statistics import Statistics
 
 
 class Experiment:

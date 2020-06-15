@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from layouts.base import BaseLayout
 from layouts.utils import get_elements
-from controllers.controllers import init_experiment_table_plan, calculate
+from layouts.controllers.controllers import init_experiment_table_plan, calculate
 
 CREATE_TABLE_BUTTON_TEXT = 'Создать таблицу эксперимента'
 START_CALCULATIONS_BUTTON_TEXT = 'Произвести расчеты'
