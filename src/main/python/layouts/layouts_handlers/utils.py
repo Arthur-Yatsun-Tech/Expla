@@ -4,7 +4,7 @@ import random
 from PySide2.QtGui import QColor
 from PySide2.QtWidgets import QLineEdit, QTableWidget, QTableWidgetItem, QGroupBox, QLabel
 
-from core.constants import VAR, COLORS, CURRENT_PARAMETER_COLOR
+from core.constants import VAR
 from layouts.tabs_layouts.table_layout import COLUMNS
 
 
@@ -51,24 +51,6 @@ def set_table_headers(experiment, table):
     [labels.append('') for _ in range(COLUMNS - len(labels))]
 
     table.setHorizontalHeaderLabels(labels)
-
-
-def set_table_color(experiment, table):
-    if not (experiment.levels == 5 and experiment.factors >= 5):
-        for columns in range(experiment.factors, 0, -1):
-            for column in range(columns):
-                if columns == 1:
-                    break
-                for row in range(experiment.levels ** columns):
-                    table.item(1, 1).setBackgroundColor(QColor(*COLORS[columns]))
-    else:
-        for columns in range(experiment.factors, 0, -1):
-            for column in range(experiment.factors):
-                for row in range(25 * columns - 25, 25 * columns):
-                    table.item(row, column).setBackgroundColor(QColor(*COLORS[columns]))
-
-            for row in range(25 * columns - 25, 25 * columns):
-                table.item(row, columns - 1).setBackgroundColor(QColor(*CURRENT_PARAMETER_COLOR))
 
 
 def fill_random_numbers(experiment, table):

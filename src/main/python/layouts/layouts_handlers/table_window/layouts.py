@@ -1,7 +1,7 @@
 from PySide2.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTableWidget
 
-from layouts.controllers.table_window.elements.buttons import calculate_data
-from layouts.controllers.table_window.elements.table import set_plan
+from layouts.layouts_handlers.table_window.elements.buttons import calculate_data
+from layouts.layouts_handlers.table_window.elements.table import set_plan
 from core.table_planer import TablePlanner
 
 

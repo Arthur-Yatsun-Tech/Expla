@@ -1,7 +1,7 @@
 from PySide2.QtWidgets import QGroupBox, QLabel, QHBoxLayout, QVBoxLayout, QLineEdit
 from dataclasses import dataclass
 
-from layouts.controllers.controllers import disable_experiments_cells_by_factor,\
+from layouts.layouts_handlers.controllers import disable_experiments_cells_by_factor,\
     set_count_of_experiments
 from layouts.base import BaseLayout
 from layouts.utils import set_size, get_validator, set_style_sheet, get_elements

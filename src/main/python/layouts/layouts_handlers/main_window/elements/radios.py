@@ -1,6 +1,6 @@
 from PySide2.QtWidgets import QLabel
 
-from layouts.controllers.main_window.elements.qlines import set_disabled
+from layouts.layouts_handlers.main_window.elements.qlines import set_disabled
 
 
 def set_level(self, text):

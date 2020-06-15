@@ -1,6 +1,6 @@
 from PySide2.QtWidgets import QGroupBox
 
-from layouts.controllers.utils import set_enabled, cast_parameter_to_int, get_experiment_cells, \
+from layouts.layouts_handlers.utils import set_enabled, cast_parameter_to_int, get_experiment_cells, \
     get_experiment_table, set_experiment_plan, get_experiments_data, set_statistics, set_criteria
 from core.experiment import Experiment
 from core.table_planer import TablePlanner

@@ -1,6 +1,6 @@
 import numpy as np
 
-from layouts.controllers.table_window.elements.table import fill_calculated_data, get_experiments_data
+from layouts.layouts_handlers.table_window.elements.table import fill_calculated_data, get_experiments_data
 
 
 def calculate_data(self):
