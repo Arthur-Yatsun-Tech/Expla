@@ -1,8 +1,8 @@
 from PySide2.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTableWidget
 
-from controllers.table_window.elements.buttons import calculate_data
-from controllers.table_window.elements.table import set_plan, fill_random_numbers, get_experiments_data
-from table_planning.table_planer import TablePlanner
+from layouts.controllers.table_window.elements.buttons import calculate_data
+from layouts.controllers.table_window.elements.table import set_plan
+from core.table_planer import TablePlanner
 
 
 def init_layouts(self, table):

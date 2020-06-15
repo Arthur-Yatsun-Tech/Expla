@@ -4,7 +4,7 @@ import random
 from PySide2.QtGui import QColor
 from PySide2.QtWidgets import QLineEdit, QTableWidget, QTableWidgetItem, QGroupBox, QLabel
 
-from constants import VAR, COLORS, CURRENT_PARAMETER_COLOR
+from core.constants import VAR, COLORS, CURRENT_PARAMETER_COLOR
 from layouts.tabs_layouts.table_layout import COLUMNS
 
 

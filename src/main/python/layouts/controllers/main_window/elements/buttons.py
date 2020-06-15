@@ -1,4 +1,4 @@
-from table import TableWindow
+from layouts.windows.table import TableWindow
 
 
 def save_table(self):

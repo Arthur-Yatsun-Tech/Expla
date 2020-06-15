@@ -4,9 +4,9 @@ from PySide2.QtGui import QRegExpValidator
 from PySide2.QtWidgets import QGroupBox, QLineEdit, QRadioButton, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, \
     QGridLayout, QWidget, QTableWidget, QTabWidget
 
-from controllers.main_window.elements.buttons import planning_table, set_buttons_disabled
-from controllers.main_window.elements.qlines import set_factors, set_experiments, set_disabled
-from controllers.main_window.elements.radios import set_level
+from layouts.controllers.main_window.elements.buttons import planning_table, set_buttons_disabled
+from layouts.controllers.main_window.elements.qlines import set_factors, set_experiments
+from layouts.controllers.main_window.elements import set_level
 from layouts.controllers_layout import ControllersLayout
 from layouts.experiment_layout import ExperimentLayout
 from layouts.levels_layout import LevelsLayout
