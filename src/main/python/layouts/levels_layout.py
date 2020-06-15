@@ -2,8 +2,7 @@ from PySide2.QtCore import Qt
 from PySide2.QtWidgets import QGroupBox, QRadioButton, QLabel, QVBoxLayout, QHBoxLayout
 from dataclasses import dataclass
 
-from controllers.controllers import disable_experiments_cells_by_level
-from controllers.main_window.elements.radios import set_level
+from layouts.controllers.controllers import disable_experiments_cells_by_level
 from layouts.base import BaseLayout
 from layouts.utils import set_alignment, get_elements
 

@@ -1,9 +1,9 @@
 from PySide2.QtWidgets import QGroupBox
 
-from controllers.utils import set_enabled, cast_parameter_to_int, get_experiment_cells, \
+from layouts.controllers.utils import set_enabled, cast_parameter_to_int, get_experiment_cells, \
     get_experiment_table, set_experiment_plan, get_experiments_data, set_statistics, set_criteria
-from experiment import Experiment
-from table_planning.table_planer import TablePlanner
+from core.experiment import Experiment
+from core.table_planer import TablePlanner
 
 
 def disable_experiments_cells_by_factor(current_layout: QGroupBox, experiment: Experiment, factors: int):

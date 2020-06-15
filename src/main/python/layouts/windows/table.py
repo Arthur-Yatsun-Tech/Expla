@@ -1,8 +1,8 @@
 import PySide2.QtGui
 from PySide2.QtWidgets import QMainWindow
 
-from controllers.table_window.layouts import disable_parent, init_layouts
-from controllers.table_window.elements.table import fill_random_numbers
+from layouts.controllers.table_window.layouts import disable_parent, init_layouts
+from layouts.controllers.table_window.elements.table import fill_random_numbers
 
 
 class TableWindow(QMainWindow):

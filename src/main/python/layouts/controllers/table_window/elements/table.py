@@ -3,7 +3,7 @@ import random
 from PySide2.QtGui import QColor
 from PySide2.QtWidgets import QTableWidgetItem
 
-from constants import COLORS, CURRENT_PARAMETER_COLOR
+from core.constants import COLORS, CURRENT_PARAMETER_COLOR
 
 
 def get_experiments_data(experiments, number_of_rows, factors, table):

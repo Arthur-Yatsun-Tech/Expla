@@ -1,6 +1,6 @@
 from abc import ABC
 
-from experiment import Experiment
+from core.experiment import Experiment
 
 
 class BaseLayout(ABC):
