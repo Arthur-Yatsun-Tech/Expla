@@ -1,8 +1,15 @@
 altgraph==0.17
+dataclasses==0.7
 fbs==0.8.6
 future==0.18.2
 macholib==1.14
+numpy==1.18.5
+pandas==1.0.4
 pefile==2019.4.18
 PyInstaller==3.4
 PySide2==5.15.0
+python-dateutil==2.8.1
+pytz==2020.1
+scipy==1.4.1
 shiboken2==5.15.0
+six==1.15.0
