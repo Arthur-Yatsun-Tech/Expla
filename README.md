@@ -1,1 +1,1 @@
-# Expla
+# Experiment Planning GUI tool
