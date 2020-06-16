@@ -2,7 +2,7 @@ from PySide2.QtCore import Qt
 from PySide2.QtWidgets import QGroupBox, QRadioButton, QLabel, QVBoxLayout, QHBoxLayout
 from dataclasses import dataclass
 
-from layouts.base import BaseLayout
+from layouts import BaseLayout
 
 
 TITLE = 'Количество уровней\n варьирования'

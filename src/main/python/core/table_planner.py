@@ -99,7 +99,7 @@ class TablePlanner:
 if __name__ == '__main__':
 
     table = TablePlanner(5, 5).create_table()
-    print(table)
+    # print(table)
     # count_of_x = [i for i in range(2, 10)]
     # levels = [2, 3, 5]
 

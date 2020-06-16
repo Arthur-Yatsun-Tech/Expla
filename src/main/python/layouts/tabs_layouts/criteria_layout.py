@@ -1,7 +1,7 @@
 from PySide2.QtWidgets import QGroupBox, QHBoxLayout, QLabel, QVBoxLayout
 from dataclasses import dataclass
 
-from layouts.base import BaseLayout
+from layouts import BaseLayout
 
 STUDENT_NAME = 'Критерий Стьюдента'
 FISHER_NAME = 'Критерий Фишера'

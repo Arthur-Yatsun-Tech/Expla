@@ -2,7 +2,7 @@ from PySide2.QtCore import Qt
 from PySide2.QtWidgets import QGroupBox, QLabel, QLineEdit, QHBoxLayout, QVBoxLayout
 from dataclasses import dataclass, fields
 
-from layouts.base import BaseLayout
+from layouts import BaseLayout
 
 LINES_REGEX = r"[-+]?\d*\.\d+|\d+"
 

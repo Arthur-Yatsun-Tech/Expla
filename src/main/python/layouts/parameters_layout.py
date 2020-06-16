@@ -1,7 +1,7 @@
 from PySide2.QtWidgets import QGroupBox, QLabel, QHBoxLayout, QVBoxLayout, QLineEdit
 from dataclasses import dataclass
 
-from layouts.base import BaseLayout
+from layouts import BaseLayout
 
 FACTORS_REGEX = r"^[2-9]$"
 EXPERIMENTS_REGEX = r"^\d{3}$"

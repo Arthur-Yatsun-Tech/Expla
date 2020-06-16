@@ -1,8 +1,7 @@
 from abc import ABC
 
 from core.experiment import Experiment
-from layouts.controllers import Controllers
-from layouts.utils import Utils
+from layouts.utils import Utils, Controllers
 
 
 class BaseLayout(ABC):

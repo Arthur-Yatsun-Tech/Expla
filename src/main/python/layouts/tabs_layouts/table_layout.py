@@ -1,7 +1,7 @@
 from PySide2.QtWidgets import QTableWidget
 from dataclasses import dataclass
 
-from layouts.base import BaseLayout
+from layouts import BaseLayout
 
 ROWS = 1000
 COLUMNS = 100

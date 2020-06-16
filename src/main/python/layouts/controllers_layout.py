@@ -1,7 +1,7 @@
 from PySide2.QtWidgets import QVBoxLayout, QGroupBox, QPushButton
 from dataclasses import dataclass
 
-from layouts.base import BaseLayout
+from layouts import BaseLayout
 
 CREATE_TABLE_BUTTON_TEXT = 'Создать таблицу эксперимента'
 START_CALCULATIONS_BUTTON_TEXT = 'Произвести расчеты'
