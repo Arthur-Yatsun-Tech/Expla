@@ -1,9 +1,7 @@
 from PySide2.QtWidgets import QVBoxLayout, QGroupBox, QPushButton
 from dataclasses import dataclass
 
-from layouts.base import BaseLayout
-from layouts.utils import get_elements
-from layouts.controllers.controllers import init_experiment_table_plan, calculate
+from layouts import BaseLayout
 
 CREATE_TABLE_BUTTON_TEXT = 'Создать таблицу эксперимента'
 START_CALCULATIONS_BUTTON_TEXT = 'Произвести расчеты'
@@ -26,8 +24,8 @@ class ControllersLayout(BaseLayout):
         self.main_layout = self.build_main_layout()
 
     def build_main_layout(self):
-        layouts = get_elements(Layouts)
-        buttons = get_elements(Buttons, [CREATE_TABLE_BUTTON_TEXT, START_CALCULATIONS_BUTTON_TEXT])
+        layouts = self.utils.get_elements(Layouts)
+        buttons = self.utils.get_elements(Buttons, [CREATE_TABLE_BUTTON_TEXT, START_CALCULATIONS_BUTTON_TEXT])
 
         self.connect_handlers(buttons)
         return self.makeup(layouts, buttons)
@@ -42,6 +40,7 @@ class ControllersLayout(BaseLayout):
 
     def connect_handlers(self, buttons):
         buttons.create_table_button.clicked.connect(
-            lambda: init_experiment_table_plan(self.main_layout, self.experiment))
+            lambda: self.controllers.init_experiment_table_plan(self.main_layout,
+                                                                self.experiment))
         buttons.start_calculations_button.clicked.connect(
-            lambda: calculate(self.main_layout, self.experiment))
+            lambda: self.controllers.calculate(self.main_layout, self.experiment))

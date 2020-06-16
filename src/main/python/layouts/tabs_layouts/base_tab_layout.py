@@ -1,10 +1,8 @@
 from PySide2.QtWidgets import QTabWidget, QWidget
 from dataclasses import dataclass
 
-from layouts.base import BaseLayout
-from layouts.tabs_layouts.criteria_layout import CriteriaLayout
-from layouts.tabs_layouts.table_layout import TableLayout
-from layouts.utils import get_elements
+from layouts import BaseLayout
+from layouts.tabs_layouts import TableLayout, CriteriaLayout
 
 TABLE_TITLE = 'Таблица эксперемента'
 CRITERIA_TITLE = 'Критерии'
@@ -26,7 +24,7 @@ class BaseTabLayout(BaseLayout):
         self.main_layout = self.build_main_layout()
 
     def build_main_layout(self):
-        tabs = get_elements(Tabs)
+        tabs = self.utils.get_elements(Tabs)
 
         return self.makeup(tabs)
 

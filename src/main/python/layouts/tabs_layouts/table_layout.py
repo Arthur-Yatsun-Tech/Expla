@@ -1,8 +1,7 @@
 from PySide2.QtWidgets import QTableWidget
 from dataclasses import dataclass
 
-from layouts.base import BaseLayout
-from layouts.utils import get_elements
+from layouts import BaseLayout
 
 ROWS = 1000
 COLUMNS = 100
@@ -20,7 +19,7 @@ class TableLayout(BaseLayout):
         self.main_layout = self.build_main_layout()
 
     def build_main_layout(self):
-        table = get_elements(Table)
+        table = self.utils.get_elements(Table)
         self.set_table_counts(table.table, ROWS, COLUMNS)
         self.set_column_width(table.table, COLUMN_WIDTH, COLUMNS)
 

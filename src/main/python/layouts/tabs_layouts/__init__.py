@@ -1,0 +1,2 @@
+from layouts.tabs_layouts.criteria_layout import CriteriaLayout
+from layouts.tabs_layouts.table_layout import TableLayout

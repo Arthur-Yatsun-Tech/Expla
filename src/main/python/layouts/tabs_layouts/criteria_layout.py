@@ -1,8 +1,7 @@
 from PySide2.QtWidgets import QGroupBox, QHBoxLayout, QLabel, QVBoxLayout
 from dataclasses import dataclass
 
-from layouts.base import BaseLayout
-from layouts.utils import get_elements
+from layouts import BaseLayout
 
 STUDENT_NAME = 'Критерий Стьюдента'
 FISHER_NAME = 'Критерий Фишера'
@@ -29,8 +28,8 @@ class CriteriaLayout(BaseLayout):
         self.main_layout = self.build_main_layout()
 
     def build_main_layout(self):
-        layouts = get_elements(Layouts)
-        labels = get_elements(Labels, [STUDENT_NAME, FISHER_NAME])
+        layouts = self.utils.get_elements(Layouts)
+        labels = self.utils.get_elements(Labels, [STUDENT_NAME, FISHER_NAME])
 
         return self.makeup(layouts, labels)
 

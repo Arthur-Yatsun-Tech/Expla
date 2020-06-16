@@ -1,10 +1,13 @@
 from abc import ABC
 
 from core.experiment import Experiment
+from layouts.utils import Utils, Controllers
 
 
 class BaseLayout(ABC):
     experiment = Experiment()
+    utils = Utils()
+    controllers = Controllers()
 
     def build_main_layout(self):
         """Get widgets and manipulate them"""
