@@ -3,7 +3,6 @@ from PySide2.QtWidgets import QGroupBox, QLabel, QLineEdit, QHBoxLayout, QVBoxLa
 from dataclasses import dataclass, fields
 
 from layouts.base import BaseLayout
-from layouts.utils import get_elements, set_alignment, get_validator
 
 LINES_REGEX = r"[-+]?\d*\.\d+|\d+"
 
@@ -94,12 +93,12 @@ class ExperimentLayout(BaseLayout):
         self.main_layout = self.build_main_layout()
 
     def build_main_layout(self):
-        layouts = get_elements(Layouts)
-        labels = get_elements(Labels, [TITLE])
-        column0_elements = get_elements(ZeroCol, [''] + max_factors_count)
-        column1_elements = get_elements(FirstCol, [X])
-        column2_elements = get_elements(SecondCol, [DELTA1])
-        column3_elements = get_elements(ThirdCol, [DELTA2])
+        layouts = self.utils.get_elements(Layouts)
+        labels = self.utils.get_elements(Labels, [TITLE])
+        column0_elements = self.utils.get_elements(ZeroCol, [''] + max_factors_count)
+        column1_elements = self.utils.get_elements(FirstCol, [X])
+        column2_elements = self.utils.get_elements(SecondCol, [DELTA1])
+        column3_elements = self.utils.get_elements(ThirdCol, [DELTA2])
 
         self.set_validators(column0_elements)
         self.set_validators(column1_elements)
@@ -140,13 +139,11 @@ class ExperimentLayout(BaseLayout):
                     getattr(elements, element.name))
                     for element in fields(elements)]
 
-    @staticmethod
-    def set_alignment(labels):
-        set_alignment(labels.title_label, Qt.AlignCenter)
+    def set_alignment(self, labels):
+        self.utils.set_alignment(labels.title_label, Qt.AlignCenter)
 
-    @staticmethod
-    def set_validators(lines):
-        only_numbers = get_validator(LINES_REGEX)
+    def set_validators(self, lines):
+        only_numbers = self.utils.get_validator(LINES_REGEX)
 
         for field in fields(lines):
             # avoid widgets with no setValidator method

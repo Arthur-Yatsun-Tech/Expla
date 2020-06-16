@@ -7,7 +7,6 @@ from layouts.experiment_layout import ExperimentLayout
 from layouts.levels_layout import LevelsLayout
 from layouts.parameters_layout import ParametersLayout
 from layouts.tabs_layouts.base_tab_layout import BaseTabLayout
-from layouts.utils import get_elements
 
 
 @dataclass
@@ -21,7 +20,7 @@ class MainLayout(BaseLayout):
         self.main_layout = self.build_result()
 
     def build_result(self):
-        layouts = get_elements(Layouts)
+        layouts = self.utils.get_elements(Layouts)
         layouts.main_inner_layout.setColumnStretch(0, 1)
         layouts.main_inner_layout.setColumnStretch(1, 3)
 

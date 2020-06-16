@@ -1,10 +1,7 @@
 from PySide2.QtWidgets import QGroupBox, QLabel, QHBoxLayout, QVBoxLayout, QLineEdit
 from dataclasses import dataclass
 
-from layouts.layouts_handlers.controllers import disable_experiments_cells_by_factor,\
-    set_count_of_experiments
 from layouts.base import BaseLayout
-from layouts.utils import set_size, get_validator, set_style_sheet, get_elements
 
 FACTORS_REGEX = r"^[2-9]$"
 EXPERIMENTS_REGEX = r"^\d{3}$"
@@ -50,9 +47,9 @@ class ParametersLayout(BaseLayout):
         self.main_layout = self.build_main_layout()
 
     def build_main_layout(self):
-        layouts = get_elements(Layouts)
-        lines = get_elements(Lines)
-        labels = get_elements(Labels, [FACTORS_LABEL_TEXT, FACTORS_LABEL_RANGE,
+        layouts = self.utils.get_elements(Layouts)
+        lines = self.utils.get_elements(Lines)
+        labels = self.utils.get_elements(Labels, [FACTORS_LABEL_TEXT, FACTORS_LABEL_RANGE,
                                        EXPERIMENTS_LABEL_TEXT, EXPERIMENTS_LABEL_RANGE])
 
         self.set_labels_color(labels)
@@ -84,29 +81,26 @@ class ParametersLayout(BaseLayout):
 
     def connect_handler(self, lines):
         lines.factors.textEdited.connect(
-            lambda: disable_experiments_cells_by_factor(
+            lambda: self.controllers.disable_experiments_cells_by_factor(
                 self.main_layout,
                 self.experiment,
                 lines.factors.text()))
         lines.experiments.textEdited.connect(
-            lambda: set_count_of_experiments(
+            lambda: self.controllers.set_count_of_experiments(
                 self.experiment,
                 lines.experiments.text()))
 
-    @staticmethod
-    def set_lines_validators(lines):
-        factors_validator = get_validator(FACTORS_REGEX)
-        experiments_validator = get_validator(EXPERIMENTS_REGEX)
+    def set_lines_validators(self, lines):
+        factors_validator = self.utils.get_validator(FACTORS_REGEX)
+        experiments_validator = self.utils.get_validator(EXPERIMENTS_REGEX)
 
         lines.factors.setValidator(factors_validator)
         lines.experiments.setValidator(experiments_validator)
 
-    @staticmethod
-    def set_labels_color(labels):
-        set_style_sheet(labels.experiments_range_label, RANGE_LABELS_COLOR)
-        set_style_sheet(labels.factors_range_label, RANGE_LABELS_COLOR)
+    def set_labels_color(self, labels):
+        self.utils.set_style_sheet(labels.experiments_range_label, RANGE_LABELS_COLOR)
+        self.utils.set_style_sheet(labels.factors_range_label, RANGE_LABELS_COLOR)
 
-    @staticmethod
-    def set_lines_size(lines):
+    def set_lines_size(self, lines):
         for line in lines.get_lines():
-            set_size(line, LINES_SIZE)
+            self.utils.set_size(line, LINES_SIZE)
