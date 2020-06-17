@@ -1,27 +1,41 @@
-from core.criteria import Criteria
-from core.statistics import Statistics
+from typing import List
+
+from core.calculator import Calculator, Criteria
 
 
 class Experiment:
-    def __init__(self):
-        self.factors = 9
-        self.count_of_experiments = 3
-        self.levels = 5
-        self.experiments_data = []
-        """
-        factors: count of experiment factors
-        experiments: count of experiment series
-        levels: count of variation levels
-        """
+    """The class to describe the experiment"""
 
+    def __init__(self, factors: int = 9,
+                 count_of_experiments: int = 3,
+                 levels: int = 5,
+                 experiment_data: List = None):
+        """
+        :param factors: number of the factors of the experiment `x` values
+        :param count_of_experiments: number of the experiments_data `y` values
+        :param levels: numbers of variations levels. possible values - [2, 3, 5]
+        :param experiment_data: numeric data of the experiment according to the
+                factors and count of the experiment
+        """
+        self.factors = factors
+        self.count_of_experiments = count_of_experiments
+        self.levels = levels
+
+        if experiment_data is None:
+            self.experiments_data = []
+
+    # todo: remove it from here
     @property
     def rows(self):
         return self.factors * 25 if self.levels == 5 and self.factors >= 5 else \
                self.levels ** self.factors
 
-    def calculate_statistics(self):
-        return Statistics(self.experiments_data).calculate()
+    def calculate_statistics(self) -> "DataFrame":
+        """Method to calculate statistics of the experiment"""
 
+        return Calculator(self.experiments_data).calculate()
+
+    # todo: make general criteria calculations
     def get_student_cirteria(self):
         df = self.count_of_experiments - 1
         return Criteria.get_student_table_value(df)

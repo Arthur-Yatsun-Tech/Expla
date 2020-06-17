@@ -2,11 +2,17 @@ import collections
 
 
 class TablePlanner:
-    def __init__(self, level, count_of_x):
-        self.count_of_x = count_of_x
+    """Class to create planning table of the experiment
+        depends on the variation level and the experiment factors
+
+        if the variation level is 5 and factors >= 5 build abridged table
+    """
+
+    def __init__(self, level: int, factors: int):
+        self.factors = factors
         self.level = level
 
-        self.is_not_full_table = (self.level == 5) and self.count_of_x >= 5
+        self.is_not_full_table = (self.level == 5) and self.factors >= 5
 
     def create_table(self):
         if self.is_not_full_table:
@@ -16,9 +22,9 @@ class TablePlanner:
 
     def _create_full_table(self):
         data = collections.defaultdict(list)
-        count_of_rows_in_each_column = self.level ** self.count_of_x
+        count_of_rows_in_each_column = self.level ** self.factors
 
-        for i in range(self.count_of_x):  # in range of each column
+        for i in range(self.factors):  # in range of each column
             rows_counter = 1
             name_of_column = 'x' + str(i + 1)
             count_of_repeated_symbols = self.level ** i
@@ -56,7 +62,7 @@ class TablePlanner:
     def _create_table(self):
         data = collections.defaultdict(list)
 
-        for i in range(self.count_of_x):
+        for i in range(self.factors):
             rows_counter = 1
             name_of_column = 'x' + str(i + 1)
 
@@ -70,7 +76,7 @@ class TablePlanner:
                         data[name_of_column].append('+*')
                         rows_counter += 5
 
-                if rows_counter > 25 * self.count_of_x:
+                if rows_counter > 25 * self.factors:
                     break
 
                 for _ in range(5):
@@ -100,10 +106,10 @@ if __name__ == '__main__':
 
     table = TablePlanner(5, 5).create_table()
     # print(table)
-    # count_of_x = [i for i in range(2, 10)]
+    # factors = [i for i in range(2, 10)]
     # levels = [2, 3, 5]
 
-    # for x in count_of_x:
+    # for x in factors:
     #     for l in levels:
     #         name = 'sample/table'
     #         name += '{}^{}.xlsx'.format(l, x)
