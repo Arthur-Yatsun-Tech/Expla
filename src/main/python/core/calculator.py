@@ -1,11 +1,12 @@
 from math import sqrt
 
 import pandas as pd
+from scipy.stats import t
 
 
-class Statistics:
-    def __init__(self, experiments_data):
-        self.experiments = experiments_data
+class Calculator:
+    def __init__(self, experiments_data=None):
+        self.experiments_data = experiments_data
 
     def calculate(self):
         mean = []
@@ -13,13 +14,13 @@ class Statistics:
         std = []
         t = []
 
-        for experiment in zip(*self.experiments):
+        for experiment in zip(*self.experiments_data):
             mean.append(self.calculate_mean(experiment))
             variation.append(self.calculate_dispersion(experiment, mean[-1]))
             std.append(sqrt(variation[-1]))
 
         max_std = max(std)
-        for experiment in zip(*self.experiments):
+        for experiment in zip(*self.experiments_data):
             t.append((max(experiment) - self.calculate_mean(experiment)) /
                      sqrt(max_std))
 
@@ -35,3 +36,11 @@ class Statistics:
         for element in data:
             sum_ += (element - mean) ** 2
         return sum_ / (len(data) - 1)
+
+
+class Criteria:
+    """"""
+
+    @staticmethod
+    def get_student_table_value(df):
+        return abs(t.ppf(0.025, df))
