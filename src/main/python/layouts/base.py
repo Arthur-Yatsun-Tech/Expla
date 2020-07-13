@@ -9,11 +9,11 @@ class BaseLayout(ABC):
     utils = Utils()
     controllers = Controllers()
 
-    def build_main_layout(self):
-        """Get widgets and manipulate them"""
+    def build_layout(self):
+        """Create widgets and manipulate them"""
         pass
 
     @staticmethod
-    def makeup(*args):
-        """Compare all resources into one layout"""
+    def compose_layout(*args):
+        """Method to compose all resources into one layout"""
         pass

@@ -4,6 +4,7 @@ from layouts.main_layout import MainLayout
 
 
 class MainWindow(QMainWindow):
+    """Application main window class"""
     def __init__(self):
         super().__init__()
         self.showMaximized()

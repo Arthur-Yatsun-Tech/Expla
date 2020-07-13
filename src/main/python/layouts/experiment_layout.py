@@ -11,8 +11,6 @@ X = 'x'
 DELTA1 = 'Δ1'
 DELTA2 = 'Δ2'
 
-max_factors_count = list(map(str, range(1, 10)))
-
 
 @dataclass
 class Layouts:
@@ -90,12 +88,13 @@ class ThirdCol:
 
 class ExperimentLayout(BaseLayout):
     def __init__(self):
-        self.main_layout = self.build_main_layout()
+        self.main_layout = self.build_layout()
 
-    def build_main_layout(self):
+    def build_layout(self):
         layouts = self.utils.get_elements(Layouts)
         labels = self.utils.get_elements(Labels, [TITLE])
-        column0_elements = self.utils.get_elements(ZeroCol, [''] + max_factors_count)
+        column0_elements = self.utils.get_elements(
+            ZeroCol, [''] + list(map(str, range(1, 10))))
         column1_elements = self.utils.get_elements(FirstCol, [X])
         column2_elements = self.utils.get_elements(SecondCol, [DELTA1])
         column3_elements = self.utils.get_elements(ThirdCol, [DELTA2])
@@ -107,7 +106,7 @@ class ExperimentLayout(BaseLayout):
 
         self.set_alignment(labels)
 
-        return self.makeup(
+        return self.compose_layout(
             layouts,
             labels,
             column0_elements,
@@ -115,7 +114,7 @@ class ExperimentLayout(BaseLayout):
             column2_elements,
             column3_elements)
 
-    def makeup(self, layouts, labels, column0_elements, column1_elements, column2_elements, column3_elements):
+    def compose_layout(self, layouts, labels, column0_elements, column1_elements, column2_elements, column3_elements):
         layouts.title_layout.addWidget(labels.title_label)
 
         self.add_widgets(layouts.col0_layout, column0_elements)

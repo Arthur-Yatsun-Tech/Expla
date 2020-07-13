@@ -16,9 +16,9 @@ class Table:
 
 class TableLayout(BaseLayout):
     def __init__(self):
-        self.main_layout = self.build_main_layout()
+        self.main_layout = self.build_layout()
 
-    def build_main_layout(self):
+    def build_layout(self):
         table = self.utils.get_elements(Table)
         self.set_table_counts(table.table, ROWS, COLUMNS)
         self.set_column_width(table.table, COLUMN_WIDTH, COLUMNS)

@@ -21,15 +21,15 @@ class Tabs:
 
 class BaseTabLayout(BaseLayout):
     def __init__(self):
-        self.main_layout = self.build_main_layout()
+        self.main_layout = self.build_layout()
 
-    def build_main_layout(self):
+    def build_layout(self):
         tabs = self.utils.get_elements(Tabs)
 
-        return self.makeup(tabs)
+        return self.compose_layout(tabs)
 
     @staticmethod
-    def makeup(tabs):
+    def compose_layout(tabs):
         table_tab = TableLayout().main_layout
         criteria_tab = CriteriaLayout().main_layout
 

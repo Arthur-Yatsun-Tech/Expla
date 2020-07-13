@@ -2,7 +2,7 @@ from PySide2.QtWidgets import QGridLayout, QWidget
 from dataclasses import dataclass
 
 from layouts import ParametersLayout, BaseLayout, LevelsLayout, ExperimentLayout, \
-    ControllersLayout, BaseTabLayout
+    ManagingLayout, BaseTabLayout
 
 
 @dataclass
@@ -20,14 +20,14 @@ class MainLayout(BaseLayout):
         layouts.main_inner_layout.setColumnStretch(0, 1)
         layouts.main_inner_layout.setColumnStretch(1, 3)
 
-        return self.makeup(layouts)
+        return self.compose_layout(layouts)
 
     @staticmethod
-    def makeup(layouts):
+    def compose_layout(layouts):
         parameters_layout = ParametersLayout().main_layout
         levels_layout = LevelsLayout().main_layout
         experiment_layout = ExperimentLayout().main_layout
-        controllers_layout = ControllersLayout().main_layout
+        controllers_layout = ManagingLayout().main_layout
         base_tab_layout = BaseTabLayout().main_layout
 
         # addWidget params:

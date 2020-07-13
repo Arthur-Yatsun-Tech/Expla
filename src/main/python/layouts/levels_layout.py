@@ -30,9 +30,9 @@ class Radios:
 
 class LevelsLayout(BaseLayout):
     def __init__(self):
-        self.main_layout = self.build_main_layout()
+        self.main_layout = self.build_layout()
 
-    def build_main_layout(self):
+    def build_layout(self):
         labels = self.utils.get_elements(Labels, [TITLE])
         radios = self.utils.get_elements(Radios, RADIOS_NAMES)
         layouts = self.utils.get_elements(Layouts)
@@ -40,10 +40,10 @@ class LevelsLayout(BaseLayout):
         self.set_elements_alignment(labels, layouts)
         self.connect_handler(radios)
 
-        return self.makeup(layouts, radios, labels)
+        return self.compose_layout(layouts, radios, labels)
 
     @staticmethod
-    def makeup(layouts, radios, labels):
+    def compose_layout(layouts, radios, labels):
         layouts.radio_layout.addWidget(radios.level2)
         layouts.radio_layout.addWidget(radios.level3)
         layouts.radio_layout.addWidget(radios.level5)

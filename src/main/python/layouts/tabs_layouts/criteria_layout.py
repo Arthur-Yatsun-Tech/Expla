@@ -25,16 +25,16 @@ class Labels:
 
 class CriteriaLayout(BaseLayout):
     def __init__(self):
-        self.main_layout = self.build_main_layout()
+        self.main_layout = self.build_layout()
 
-    def build_main_layout(self):
+    def build_layout(self):
         layouts = self.utils.get_elements(Layouts)
         labels = self.utils.get_elements(Labels, [STUDENT_NAME, FISHER_NAME])
 
-        return self.makeup(layouts, labels)
+        return self.compose_layout(layouts, labels)
 
     @staticmethod
-    def makeup(layouts, labels):
+    def compose_layout(layouts, labels):
         layouts.student_layout.addWidget(labels.student_name_label)
         layouts.student_layout.addWidget(labels.student_result_label)
 

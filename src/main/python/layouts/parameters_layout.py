@@ -44,9 +44,9 @@ class Lines:
 
 class ParametersLayout(BaseLayout):
     def __init__(self):
-        self.main_layout = self.build_main_layout()
+        self.main_layout = self.build_layout()
 
-    def build_main_layout(self):
+    def build_layout(self):
         layouts = self.utils.get_elements(Layouts)
         lines = self.utils.get_elements(Lines)
         labels = self.utils.get_elements(Labels, [FACTORS_LABEL_TEXT, FACTORS_LABEL_RANGE,
@@ -57,10 +57,10 @@ class ParametersLayout(BaseLayout):
         self.set_lines_validators(lines)
 
         self.connect_handler(lines)
-        return self.makeup(layouts, labels, lines)
+        return self.compose_layout(layouts, labels, lines)
 
     @staticmethod
-    def makeup(layouts, labels, lines):
+    def compose_layout(layouts, labels, lines):
         layouts.experiments_labels_layout.addWidget(labels.experiments_label)
         layouts.experiments_labels_layout.addWidget(labels.experiments_range_label)
 
