@@ -71,7 +71,7 @@ class ParametersLayout(BaseLayout):
         layouts.labels_layout.addLayout(layouts.experiments_labels_layout)
 
         layouts.lines_layout.addWidget(lines.factors)
-        layouts.lines_layout.addWidget(lines.experiments_data)
+        layouts.lines_layout.addWidget(lines.experiments)
 
         layouts.main_inner_layout.addLayout(layouts.labels_layout)
         layouts.main_inner_layout.addLayout(layouts.lines_layout)
@@ -81,21 +81,21 @@ class ParametersLayout(BaseLayout):
 
     def connect_handler(self, lines):
         lines.factors.textEdited.connect(
-            lambda: self.controllers.disable_experiments_cells_by_factor(
+            lambda: self.controllers.disable_experiments_cells_by_number_of_factors(
                 self.main_layout,
                 self.experiment,
                 lines.factors.text()))
-        lines.experiments_data.textEdited.connect(
-            lambda: self.controllers.set_count_of_experiments(
+        lines.experiments.textEdited.connect(
+            lambda: self.controllers.set_number_of_experiments(
                 self.experiment,
-                lines.experiments_data.text()))
+                lines.experiments.text()))
 
     def set_lines_validators(self, lines):
         factors_validator = self.utils.get_validator(FACTORS_REGEX)
         experiments_validator = self.utils.get_validator(EXPERIMENTS_REGEX)
 
         lines.factors.setValidator(factors_validator)
-        lines.experiments_data.setValidator(experiments_validator)
+        lines.experiments.setValidator(experiments_validator)
 
     def set_labels_color(self, labels):
         self.utils.set_style_sheet(labels.experiments_range_label, RANGE_LABELS_COLOR)

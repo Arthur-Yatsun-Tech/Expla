@@ -3,14 +3,14 @@ import collections
 
 class TablePlanner:
     """Class to create planning table of the experiment
-        depends on the variation level and the experiment factors
+        depends on the variation variation_level and the experiment factors
 
-        if the variation level is 5 and factors >= 5 build abridged table
+        if the variation variation_level is 5 and factors >= 5 build abridged table
     """
 
     def __init__(self, level: int, factors: int):
         """
-        :param level: variation level of the experiment
+        :param level: variation variation_level of the experiment
         :param factors: number of the experiment factors
         """
 

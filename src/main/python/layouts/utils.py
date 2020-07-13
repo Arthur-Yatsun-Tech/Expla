@@ -10,14 +10,26 @@ from core.table_planner import TablePlanner
 
 
 class Controllers:
+    """Class to handle all elements controllers"""
+
     def __init__(self):
         self.utils = Utils()
 
-    def disable_experiments_cells_by_factor(self, current_layout: QGroupBox, experiment: "Experiment", factors: int):
+    def disable_experiments_cells_by_number_of_factors(self, parameters_layout: QGroupBox,
+                                                       experiment: "Experiment",
+                                                       factors: int):
+        """Method to disable cells in the experiments layout by the factor.
+           Method is the controller of the QLineEdit for number of the factors
+
+        :param parameters_layout: main parameters layout
+        :param experiment: Experiment object to write in the experiment factors
+        :param factors: number of the factors entered by the user
+        """
+
         experiment.factors = self.utils.cast_parameter_to_int(factors)
+        experiment_cells = self.utils.get_experiment_cells(parameters_layout)
 
-        experiment_cells = self.utils.get_experiment_cells(current_layout)
-
+        # todo: what is going on?
         x_cells = experiment_cells[:9][::-1]
         d1_cells = experiment_cells[9:18][::-1]
         d2_cells = experiment_cells[18:][::-1]
@@ -38,10 +50,22 @@ class Controllers:
                 lambda cell: self.utils.set_enabled(cell),
                 unused_cells))
 
-    def disable_experiments_cells_by_level(self, current_layout, experiment, level):
-        experiment.levels = self.utils.cast_parameter_to_int(level)
+    def disable_experiments_cells_by_variation_level(self,
+                                                     variation_levels_layout: QGroupBox,
+                                                     experiment: "Experiment",
+                                                     variation_level: int):
+        """Method to disable cells in the experiments layout by the variation_level.
+           Method is the controller of the QLineEdit for number of the factors
 
-        experiment_cells = self.utils.get_experiment_cells(current_layout)
+        :param variation_levels_layout: variation levels layout
+        :param experiment: Experiment object
+        :param variation_level: variation level entered by the user
+        """
+
+        experiment.levels = self.utils.cast_parameter_to_int(variation_level)
+        experiment_cells = self.utils.get_experiment_cells(variation_levels_layout)
+
+        # todo: what is d2 cells?
         d2_cells = experiment_cells[18:]
 
         if experiment.levels != 5:
@@ -58,11 +82,23 @@ class Controllers:
                     lambda cell: self.utils.set_enabled(cell, True),
                     d2_cells[:experiment.factors]))
 
-    def set_count_of_experiments(self, experiment, count_of_experiments):
-        experiment.count_of_experiments = self.utils.cast_parameter_to_int(count_of_experiments)
+    def set_number_of_experiments(self, experiment: "Experiment", experiment_series: int):
+        """Method to set the number of experiments to the Experiment object.
+           Method is the controller of the QLineEdit for the number of experiment series
 
-    def init_experiment_table_plan(self, current_layout, experiment):
-        table = self.utils.get_experiment_table(current_layout)
+        :param experiment: experiment object to set the experiment_series entered by user
+        :param experiment_series: experiment series entered by the user
+        """
+
+        experiment.count_of_experiments = self.utils. \
+            cast_parameter_to_int(experiment_series)
+
+    def create_experiment_table_plan(self, controllers_layout: "QGroupBox",
+                                     experiment: "Experiment"):
+        """Method to create the experiment table plan"""
+
+        # todo: simplify this
+        table = self.utils.get_experiment_table(controllers_layout)
 
         plan = TablePlanner(experiment.levels, experiment.factors).create_table()
         self.utils.set_experiment_plan(experiment, table, plan)
