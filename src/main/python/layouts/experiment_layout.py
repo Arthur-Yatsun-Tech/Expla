@@ -1,10 +1,9 @@
 from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QGroupBox, QLabel, QLineEdit, QHBoxLayout, QVBoxLayout
+from PySide2.QtWidgets import QGroupBox, QLabel, QLineEdit, QHBoxLayout, QVBoxLayout, \
+    QLayout
 from dataclasses import dataclass, fields
 
 from layouts import BaseLayout
-
-LINES_REGEX = r"[-+]?\d*\.\d+|\d+"
 
 TITLE = 'Числовые данные эксперимента'
 X = 'x'
@@ -104,17 +103,23 @@ class ExperimentLayout(BaseLayout):
         self.set_validators(column2_elements)
         self.set_validators(column3_elements)
 
-        self.set_alignment(labels)
+        self.set_labels_alignment(labels)
 
-        return self.compose_layout(
-            layouts,
-            labels,
-            column0_elements,
-            column1_elements,
-            column2_elements,
-            column3_elements)
+        return self.compose_layout(layouts,
+                                   labels,
+                                   column0_elements,
+                                   column1_elements,
+                                   column2_elements,
+                                   column3_elements)
 
-    def compose_layout(self, layouts, labels, column0_elements, column1_elements, column2_elements, column3_elements):
+    def compose_layout(self,
+                       layouts: Layouts,
+                       labels: Labels,
+                       column0_elements: ZeroCol,
+                       column1_elements: FirstCol,
+                       column2_elements: SecondCol,
+                       column3_elements: ThirdCol):
+
         layouts.title_layout.addWidget(labels.title_label)
 
         self.add_widgets(layouts.col0_layout, column0_elements)
@@ -133,20 +138,37 @@ class ExperimentLayout(BaseLayout):
         return layouts.main_layout
 
     @staticmethod
-    def add_widgets(layout, elements):
-        return [layout.addWidget(
-                    getattr(elements, element.name))
-                    for element in fields(elements)]
+    def add_widgets(layout: QLayout, widgets: dataclass):
+        """Method to add widgets on the layout
 
-    def set_alignment(self, labels):
-        self.utils.set_alignment(labels.title_label, Qt.AlignCenter)
+        :param layout: layout to add widgets on
+        :param widgets: dataclass of widgets
+        """
+        return [layout.addWidget(getattr(widgets, element.name))
+                for element in fields(widgets)]
 
-    def set_validators(self, lines):
-        only_numbers = self.utils.get_validator(LINES_REGEX)
+    def set_labels_alignment(self,
+                             labels: Labels,
+                             alignment: Qt.Alignment = Qt.AlignCenter):
+        """Method to set labels alignment
+
+        :param labels: labels to set the alignment
+        :param alignment: default labels alignment
+        """
+        self.utils.set_alignment(labels.title_label, alignment)
+
+    def set_validators(self, lines: dataclass, regex: str = r"[-+]?\d*\.\d+|\d+"):
+        """Method to set validators to the QLineEdit objects
+
+        :param lines: dataclass with the QLineEdit objects
+        :param regex: regex string to set for validator
+        """
+        only_numbers_validator = self.utils.get_validator(regex)
 
         for field in fields(lines):
-            # avoid widgets with no setValidator method
+            # to avoid widgets with no setValidator method because the Lines dataclasses
+            # have also the QLabel widgets
             try:
-                getattr(lines, field.name).setValidator(only_numbers)
+                getattr(lines, field.name).setValidator(only_numbers_validator)
             except AttributeError:
                 pass

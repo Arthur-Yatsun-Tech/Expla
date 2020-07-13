@@ -1,9 +1,10 @@
 import collections
 import random
-from typing import Tuple
+from typing import Tuple, List
 
 from PySide2 import QtCore, QtWidgets, QtGui
 from PySide2.QtWidgets import QLineEdit, QTableWidget, QTableWidgetItem, QGroupBox, QLabel
+from dataclasses import dataclass
 
 from core.constants import VAR
 from core.table_planner import TablePlanner
@@ -115,16 +116,21 @@ class Controllers:
 
 class Utils:
     @staticmethod
-    def get_elements(dataclass, arguments=None):
+    def get_elements(class_: dataclass, arguments: List = None):
+        """Method to create elements of dataclass with arguments or not
+
+        :param class_: dataclass to create his elements
+        :param arguments: arguments of the element of dataclass provided as list
+        """
+
         elements = {}
-        for name, type_ in dataclass.__annotations__.items():
+        for name, type_ in class_.__annotations__.items():
             try:
                 argument = arguments.pop(0)
             except (AttributeError, IndexError):
                 argument = None
             elements[name] = type_(argument)
-
-        return dataclass(**elements)
+        return class_(**elements)
 
     @staticmethod
     def set_size(element: QtWidgets, size: Tuple[int, int]):
