@@ -19,7 +19,6 @@ class ControllersUtils:
         :param parameters_layout: main parameters layout
         :param factors: number of the factors entered by the user
         """
-
         self.experiment.factors = self.utils.cast_parameter_to_int(factors)
         experiment_cells = self.utils.get_experiment_cells(parameters_layout)
 
@@ -52,7 +51,6 @@ class ControllersUtils:
         :param variation_levels_layout: variation levels layout
         :param variation_level: variation level entered by the user
         """
-
         self.experiment.levels = self.utils.cast_parameter_to_int(variation_level)
         experiment_cells = self.utils.get_experiment_cells(variation_levels_layout)
 
@@ -79,7 +77,6 @@ class ControllersUtils:
 
         :param experiment_series: experiment series entered by the user
         """
-
         self.experiment.count_of_experiments = self.utils. \
             cast_parameter_to_int(experiment_series)
 
@@ -95,13 +92,18 @@ class ControllersUtils:
 
         self.utils.set_experiment_plan(table, plan)
 
-    def calculate(self, current_layout: QGroupBox):
-        experiment_table = self.utils.get_experiment_table(current_layout)
+    def calculate(self, controllers_layout: QGroupBox):
+        """Method to make all calculations
+
+        :param controllers_layout: QGroup Object to manipulate with another layouts
+        """
+        experiment_table = self.utils.get_experiment_table(controllers_layout)
         self.utils.get_experiments_data(experiment_table)
         statistics = self.experiment.calculate_statistics()
         self.utils.set_statistics_data(experiment_table, statistics)
 
-        self.utils.set_criteria(current_layout, max(statistics['t']))
+        self.utils.set_criteria(controllers_layout, max(statistics['t']))
 
-        regression_table = self.utils.get_regression_table(current_layout)
+        regression_table = self.utils.get_regression_table(controllers_layout)
         self.experiment.calculate_regression_coeffs()
+        self.utils.set_regression_coeffs(regression_table)

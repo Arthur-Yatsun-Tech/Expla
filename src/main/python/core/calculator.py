@@ -66,7 +66,7 @@ class Calculator:
 
             for combination in combinations:
                 converted_combination = self.convert_symbols_to_numbers(combination)
-                coeff_name = 'b'
+                coeff_name = ''
 
                 # create coefficient name
                 for data_column in converted_combination:
@@ -87,10 +87,10 @@ class Calculator:
                 coeff_result = sum(comb * ex_mean for comb, ex_mean in
                     zip(passing_combinations, self.experiment.mean)) / self.experiment.rows
 
-                coeffs[coeff_name] = coeff_result
+                coeffs[coeff_name] = round(coeff_result, 4)
 
         # get the b0 coeff
-        coeffs['b0'] = sum(self.experiment.mean) / self.experiment.rows
+        coeffs['0'] = sum(self.experiment.mean) / self.experiment.rows
         self.experiment.set_regression_coeffs(coeffs)
 
     def convert_symbols_to_numbers(self, combinations: Tuple[Tuple[str, List]]) -> deque:

@@ -6,7 +6,7 @@ from layouts import BaseLayout
 ROWS = 100
 COLUMNS = 40
 
-COLUMN_WIDTH = 50
+COLUMN_WIDTH = 60
 
 
 @dataclass

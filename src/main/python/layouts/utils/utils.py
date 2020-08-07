@@ -78,7 +78,15 @@ class Utils:
 
         :param regression_table: regression table to set the coeffs
         """
-        pass
+        coeffs_names = sorted(
+            map(lambda x: int(x), self.experiment.regression_coeffs.keys()))
+        coeffs = self.experiment.regression_coeffs
+
+        for row, name in zip(range(self.experiment.rows), coeffs_names):
+            regression_table.setItem(row, 0, QTableWidgetItem(
+                'b' + str(name)))
+            regression_table.setItem(row, 1, QTableWidgetItem(
+                str(coeffs[str(name)])))
 
     def set_experiment_table_headers(self, table):
         x = [f'x{i + 1}' for i in range(self.experiment.factors)]
