@@ -1,7 +1,6 @@
 import itertools
 from collections import deque
 from math import sqrt
-from operator import add, mul
 from typing import Tuple, List
 
 import pandas as pd
@@ -21,7 +20,7 @@ class Calculator:
         mean = []
         variation = []
         std = []
-        t = []
+        student_criteria = []
 
         for experiment in zip(*self.experiment.experiments_data):
             mean.append(self.calculate_mean(experiment))
@@ -30,13 +29,19 @@ class Calculator:
 
         max_std = max(std)
         for experiment in zip(*self.experiment.experiments_data):
-            t.append((max(experiment) - self.calculate_mean(experiment)) /
+            student_criteria.append((max(experiment) - self.calculate_mean(experiment)) /
                      sqrt(max_std))
 
-        self.experiment.mean = mean
+        self.experiment.set_mean(mean)
+        self.experiment.set_variation(variation)
+        self.experiment.set_std(std)
+        self.experiment.set_student_criteria(student_criteria)
 
         return pd.DataFrame(
-            {'mean': mean, 'variation': variation, 'std': std, 't': t}).round(3)
+            {'mean': mean,
+             'variation': variation,
+             'std': std,
+             't': student_criteria}).round(3)
 
     @staticmethod
     def calculate_mean(data):
@@ -52,7 +57,7 @@ class Calculator:
     def calculate_regression_coeffs(self):
         coeffs = {}
 
-        plan = self.experiment.experiment_plan
+        plan = self.experiment.experiments_plan
         plan = [(key[-1], plan[key]) for key in sorted(plan.keys())]
 
         for index in range(1, self.experiment.factors + 1):
@@ -62,7 +67,6 @@ class Calculator:
             for combination in combinations:
                 converted_combination = self.convert_symbols_to_numbers(combination)
                 coeff_name = 'b'
-                coeff_result = 0
 
                 # create coefficient name
                 for data_column in converted_combination:
@@ -87,7 +91,7 @@ class Calculator:
 
         # get the b0 coeff
         coeffs['b0'] = sum(self.experiment.mean) / self.experiment.rows
-        print(coeffs)
+        self.experiment.set_regression_coeffs(coeffs)
 
     def convert_symbols_to_numbers(self, combinations: Tuple[Tuple[str, List]]) -> deque:
         """Method to convert symbols from the experiment plan into the numbers to

@@ -1,12 +1,12 @@
 from abc import ABC
 
 from core.experiment import Experiment
-from layouts.utils import Utils, ControllersUtils
+from layouts.utils import Utils, ControllersUtils, LayoutsUtils
 
 
 class BaseLayout(ABC):
     experiment = Experiment()
-    utils = Utils(experiment)
+    utils = LayoutsUtils(experiment)
     controllers = ControllersUtils(experiment)
 
     def build_layout(self):

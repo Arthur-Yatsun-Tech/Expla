@@ -12,40 +12,45 @@ class Experiment:
     def __init__(self, factors: int = 9,
                  count_of_experiments: int = 3,
                  levels: int = 5,
-                 experiment_data: Optional[List[collections.deque]] = None,
-                 experiment_plan: Optional[collections.defaultdict] = None,
+                 experiments_data: Optional[List[collections.deque]] = None,
+                 experiments_plan: Optional[collections.defaultdict] = None,
                  regression_coeffs: Optional[Dict] = None,
                  mean: Optional[List] = None,
-                 # TODO: add another statistics
-                 ):
+                 variation: Optional[List] = None,
+                 std: Optional[List] = None,
+                 student_criteria: Optional[List] = None):
         """
         :param factors: number of the factors of the experiment `x` values
         :param count_of_experiments: number of the experiments_data `y` values
         :param levels: numbers of variations levels. possible values - [2, 3, 5]
-        :param experiment_data: numeric data of the experiment according to the
+        :param experiments_data: numeric data of the experiment according to the
                 factors and count of the experiment
-        :param experiment_plan: experiment table
+        :param experiments_plan: experiment table
         :param regression_coeffs: regression coefficients
         :param mean: mean value of the experiments
+        :param variation: variation of the experiments
+        :param std: standard derivation of the experiments
+        :param student_criteria: student criteria of the experiments
         """
         self.factors = factors
         self.count_of_experiments = count_of_experiments
         self.levels = levels
+
+        # dynamic parameters
+        self.experiments_data = experiments_data
+        self.experiments_plan = experiments_plan
+        self.regression_coeffs = regression_coeffs
+
+        # statistics
         self.mean = mean
+        self.variation = variation
+        self.std = std
+        self.student_criteria = student_criteria
 
         # TODO: Only for test proposals, remove it
         self.factors = 4
         self.count_of_experiments = 2
         self.levels = 2
-
-        if experiment_data is None:
-            self.experiments_data = []
-
-        if experiment_plan is None:
-            self.experiment_plan = []
-
-        if regression_coeffs is None:
-            self.regression_coeffs = {}
 
     @property
     def calculator(self):
@@ -56,11 +61,41 @@ class Experiment:
         return self.factors * 25 if self.levels == 5 and self.factors >= 5 else \
                self.levels ** self.factors
 
+    def set_experiments_data(self, experiments_data: List[collections.deque]):
+        """Method to set experiments data"""
+        self.experiments_data = experiments_data
+
+    def set_experiments_plan(self, experiments_plan: collections.defaultdict):
+        """Method to set the experiments plan"""
+        self.experiments_plan = experiments_plan
+
+    def set_regression_coeffs(self, regression_coeffs: Dict):
+        """Method to set regression coeffs"""
+        self.regression_coeffs = regression_coeffs
+
+    def set_mean(self, mean: List):
+        """Method to set mean"""
+        self.mean = mean
+
+    def set_variation(self, variation: List):
+        """Method to set variation"""
+        self.variation = variation
+
+    def set_std(self, std: List):
+        """Method to set std"""
+        self.std = std
+
+    def set_student_criteria(self, student_criteria: List):
+        """Method to set student criteria"""
+        self.student_criteria = student_criteria
+
     def calculate_statistics(self) -> DataFrame:
-        """Method to calculate_statistics statistics of the experiment"""
-        result = self.calculator.calculate_statistics()
-        self.calculator.calculate_regression_coeffs()
-        return result
+        """Method to calculate statistics of the experiment"""
+        return self.calculator.calculate_statistics()
+
+    def calculate_regression_coeffs(self) -> Dict:
+        """Method to calculate the regression coefficients for the experiment"""
+        return self.calculator.calculate_regression_coeffs()
 
     # todo: make general criteria calculations
     def get_student_cirteria(self):
