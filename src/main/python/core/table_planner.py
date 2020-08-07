@@ -20,12 +20,10 @@ class TablePlanner:
     @property
     def is_not_full_table(self):
         """Check is table to build is full or not"""
-
         return (self.level == 5) and self.factors >= 5
 
     def create_table(self) -> collections.defaultdict:
         """Method to create table"""
-
         if self.is_not_full_table:
             return self._create_table()
         else:
@@ -33,7 +31,6 @@ class TablePlanner:
 
     def _create_full_table(self) -> collections.defaultdict:
         """Method to create full experiment table"""
-
         data = collections.defaultdict(list)
         count_of_rows_in_each_column = self.level ** self.factors
 

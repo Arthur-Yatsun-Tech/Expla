@@ -1,6 +1,6 @@
 import collections
 import random
-from typing import Tuple, List, Optional
+from typing import Tuple, List
 from string import ascii_uppercase
 
 import openpyxl
@@ -98,12 +98,11 @@ class ControllersUtils:
         :param controllers_layout: QGroupBox Object to get the table layout
             regarding its position
         """
-
-        # todo: simplify this
         table = self.utils.get_experiment_table(controllers_layout)
-
         plan = TablePlanner(
             self.experiment.levels, self.experiment.factors).create_table()
+        self.experiment.experiment_table = plan
+
         self.utils.set_experiment_plan(table, plan)
 
     def calculate(self, current_layout: QGroupBox):
@@ -188,7 +187,20 @@ class Utils:
         tab_widget = main_window.children()[-1]
         return tab_widget.findChildren(QTableWidget)[-1]
 
-    def set_experiment_plan(self, table, plan):
+    @staticmethod
+    def get_regression_table(current_layout):
+        main_window = current_layout.parent()
+        tab_widget = main_window.children()[-1]
+        return tab_widget.findChildren(QTableWidget)[0]
+
+    def set_experiment_plan(self, table: QTableWidget, plan: collections.defaultdict):
+        """Method to set the experiment plan into the table layout
+
+        :param table: table widget
+        :param plan: experiment plan
+        """
+        self.experiment.experiment_table = plan
+
         for column, key in zip(range(self.experiment.factors), plan.keys()):
             for row in range(self.experiment.rows):
                 table.setItem(row, column, QTableWidgetItem(
