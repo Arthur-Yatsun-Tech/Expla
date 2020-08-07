@@ -186,7 +186,7 @@ class Utils:
     def get_experiment_table(current_layout):
         main_window = current_layout.parent()
         tab_widget = main_window.children()[-1]
-        return tab_widget.findChild(QTableWidget)
+        return tab_widget.findChildren(QTableWidget)[-1]
 
     def set_experiment_plan(self, table, plan):
         for column, key in zip(range(self.experiment.factors), plan.keys()):
@@ -283,3 +283,24 @@ class Utils:
             f'Максимальное расчетное значение:\n'
             f'{t_max}\n\n'
             f'Условие t-расчетное < t-табличное {result}')
+
+    @staticmethod
+    def set_table_counts(table: QTableWidget, rows: int, columns: int):
+        """Method to set the number of rows and columns in the table
+
+        :param table: table to set the count
+        :param rows: number of rows
+        :param columns: number of columns
+        """
+        table.setRowCount(rows)
+        table.setColumnCount(columns)
+
+    @staticmethod
+    def set_column_width(table: QTableWidget, width: int, columns: int):
+        """Method to set the width of the columns in the table
+
+        :param table: table widget to set column width
+        :param width: width number
+        :param columns: the count of the columns to set width
+        """
+        [table.setColumnWidth(i, width) for i in range(columns)]

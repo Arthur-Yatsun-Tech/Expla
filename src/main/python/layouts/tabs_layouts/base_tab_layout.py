@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 from layouts import BaseLayout
 from layouts.tabs_layouts import TableLayout, CriteriaLayout
+from layouts.tabs_layouts.regression_coeffs_layout import RegressionCoeffsLayout
 
 TABLE_TITLE = 'Таблица эксперемента'
 CRITERIA_TITLE = 'Критерии'
@@ -14,7 +15,6 @@ REGRESSION_EQUATION_TITLE = 'Регрессионное уравнение'
 @dataclass
 class Tabs:
     main_tab: QTabWidget
-    regression_coefs_tab: QWidget
     plots_tab: QWidget
     regression_equation_tab: QWidget
 
@@ -25,17 +25,17 @@ class BaseTabLayout(BaseLayout):
 
     def build_layout(self):
         tabs = self.utils.get_elements(Tabs)
-
         return self.compose_layout(tabs)
 
     @staticmethod
     def compose_layout(tabs):
         table_tab = TableLayout().main_layout
         criteria_tab = CriteriaLayout().main_layout
+        regression_coeffs_tab = RegressionCoeffsLayout().main_layout
 
         tabs.main_tab.addTab(table_tab, TABLE_TITLE)
         tabs.main_tab.addTab(criteria_tab, CRITERIA_TITLE)
-        tabs.main_tab.addTab(tabs.regression_coefs_tab, REGRESSION_COEFS_TITLE)
+        tabs.main_tab.addTab(regression_coeffs_tab, REGRESSION_COEFS_TITLE)
         tabs.main_tab.addTab(tabs.plots_tab, PLOTS_TITLE)
         tabs.main_tab.addTab(tabs.regression_equation_tab, REGRESSION_EQUATION_TITLE)
 

@@ -3,6 +3,11 @@ from dataclasses import dataclass
 
 from layouts import BaseLayout
 
+ROWS = 100
+COLUMNS = 40
+
+COLUMN_WIDTH = 50
+
 
 @dataclass
 class Table:
@@ -17,8 +22,6 @@ class RegressionCoeffsLayout(BaseLayout):
 
     def build_layout(self):
         table = self.utils.get_elements(Table)
-
-        return table
-
-    def compose_layout(*args):
-        pass
+        self.utils.set_table_counts(table.table, ROWS, COLUMNS)
+        self.utils.set_column_width(table.table, COLUMN_WIDTH, COLUMNS)
+        return table.table

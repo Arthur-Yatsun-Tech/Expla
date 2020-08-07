@@ -22,14 +22,13 @@ class Experiment:
         self.levels = levels
 
         # TODO: Only for test proposals, remove it
-        # self.factors = 4
-        # self.count_of_experiments = 2
-        # self.levels = 2
+        self.factors = 4
+        self.count_of_experiments = 2
+        self.levels = 2
 
         if experiment_data is None:
             self.experiments_data = []
 
-    # todo: remove it from here
     @property
     def rows(self):
         return self.factors * 25 if self.levels == 5 and self.factors >= 5 else \

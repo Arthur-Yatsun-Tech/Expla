@@ -20,17 +20,10 @@ class TableLayout(BaseLayout):
 
     def build_layout(self):
         table = self.utils.get_elements(Table)
-        self.set_table_counts(table.table, ROWS, COLUMNS)
-        self.set_column_width(table.table, COLUMN_WIDTH, COLUMNS)
-
+        self.utils.set_table_counts(table.table, ROWS, COLUMNS)
+        self.utils.set_column_width(table.table, COLUMN_WIDTH, COLUMNS)
         return table.table
 
-    @staticmethod
-    def set_table_counts(table, rows, columns):
-        table.setRowCount(rows)
-        table.setColumnCount(columns)
 
-    @staticmethod
-    def set_column_width(table, width, columns):
-        [table.setColumnWidth(i, width) for i in range(columns)]
+
 
