@@ -101,7 +101,6 @@ class ControllersUtils:
         table = self.utils.get_experiment_table(controllers_layout)
         plan = TablePlanner(
             self.experiment.levels, self.experiment.factors).create_table()
-        self.experiment.experiment_table = plan
 
         self.utils.set_experiment_plan(table, plan)
 
@@ -199,9 +198,9 @@ class Utils:
         :param table: table widget
         :param plan: experiment plan
         """
-        self.experiment.experiment_table = plan
+        self.experiment.experiment_plan = plan
 
-        for column, key in zip(range(self.experiment.factors), plan.keys()):
+        for column, key in zip(range(self.experiment.factors), sorted(plan.keys())):
             for row in range(self.experiment.rows):
                 table.setItem(row, column, QTableWidgetItem(
                     plan[key][row]))
@@ -215,7 +214,7 @@ class Utils:
         if self.experiment.factors == 4 and \
                 self.experiment.count_of_experiments == 2 and \
                 self.experiment.levels == 2:
-            filepath = "/home/arthur/expla/src/main/python/test_experiments/chemicals.xlsx"
+            filepath = "/home/arthur/expla/src/main/python/test_xlsx_files/chemicals.xlsx"
             self.read_and_paste_from_excel(table, filepath)
 
     def set_table_headers(self, table):
@@ -240,7 +239,7 @@ class Utils:
 
         # indexes of the columns in excel are in the format A1, B1, C1.. AA1, AB1..
         # here we get the last index of the column regarding the count of experiments
-        # TODO: add AA1 indexes
+        # TODO: add AA1.. indexes
         end_letter_index = ascii_uppercase[self.experiment.count_of_experiments-1:][0]
         cells = sheet["A1": f"{end_letter_index}{self.experiment.rows}"]
 
@@ -248,8 +247,8 @@ class Utils:
         # [[row1value1, row1value2..], [row2value1, row2value2..].. ]
         # to format
         # [[column1value1, column1value2..], [column2value1, column2value2].. ]
-
         cells = list(zip(*map(lambda x: [value.value for value in x], cells)))
+
         for column in range(self.experiment.count_of_experiments):
             for row in range(self.experiment.rows):
                 table.setItem(row, column + self.experiment.factors,

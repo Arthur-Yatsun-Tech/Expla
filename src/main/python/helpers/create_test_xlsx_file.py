@@ -12,4 +12,4 @@ sheet = workbook.active
 for values in zip(*experiment_data):
     sheet.append(values)
 
-workbook.save('./../test_experiments/chemicals.xlsx')
+workbook.save('./../test_xlsx_files/chemicals.xlsx')

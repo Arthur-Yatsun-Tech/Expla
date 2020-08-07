@@ -1,30 +1,42 @@
+import itertools
+from collections import deque
 from math import sqrt
+from operator import add, mul
+from typing import Tuple, List
 
 import pandas as pd
 from scipy.stats import t
 
 
 class Calculator:
-    def __init__(self, experiments_data=None):
-        self.experiments_data = experiments_data
 
-    def calculate(self):
+    SUBTRACTION_SYMBOL = '-'
+    ADD_SYMBOL = '+'
+    ZERO_SYMBOL = '0'
+
+    def __init__(self, experiment):
+        self.experiment = experiment
+
+    def calculate_statistics(self) -> pd.DataFrame:
         mean = []
         variation = []
         std = []
         t = []
 
-        for experiment in zip(*self.experiments_data):
+        for experiment in zip(*self.experiment.experiments_data):
             mean.append(self.calculate_mean(experiment))
             variation.append(self.calculate_dispersion(experiment, mean[-1]))
             std.append(sqrt(variation[-1]))
 
         max_std = max(std)
-        for experiment in zip(*self.experiments_data):
+        for experiment in zip(*self.experiment.experiments_data):
             t.append((max(experiment) - self.calculate_mean(experiment)) /
                      sqrt(max_std))
 
-        return pd.DataFrame({'mean': mean, 'variation': variation, 'std': std, 't': t}).round(3)
+        self.experiment.mean = mean
+
+        return pd.DataFrame(
+            {'mean': mean, 'variation': variation, 'std': std, 't': t}).round(3)
 
     @staticmethod
     def calculate_mean(data):
@@ -36,6 +48,67 @@ class Calculator:
         for element in data:
             sum_ += (element - mean) ** 2
         return sum_ / (len(data) - 1)
+
+    def calculate_regression_coeffs(self):
+        coeffs = {}
+
+        plan = self.experiment.experiment_plan
+        plan = [(key[-1], plan[key]) for key in sorted(plan.keys())]
+
+        for index in range(1, self.experiment.factors + 1):
+            # create the combinations for columns in plan regarding the index value
+            combinations = list(itertools.combinations(plan, index))
+
+            for combination in combinations:
+                converted_combination = self.convert_symbols_to_numbers(combination)
+                coeff_name = 'b'
+                coeff_result = 0
+
+                # create coefficient name
+                for data_column in converted_combination:
+                    coeff_name += data_column[0]
+
+                # get only the lists from the converted_combinatins
+                combination_arrays = list(map(lambda x: x[1], converted_combination))
+                passing_combinations = []
+
+                # create passing table values
+                for row_elements in zip(*combination_arrays):
+                    result = 1
+                    for element in row_elements:
+                        result *= element
+                    passing_combinations.append(result)
+
+                # count coefficients
+                coeff_result = sum(comb * ex_mean for comb, ex_mean in
+                    zip(passing_combinations, self.experiment.mean)) / self.experiment.rows
+
+                coeffs[coeff_name] = coeff_result
+
+        # get the b0 coeff
+        coeffs['b0'] = sum(self.experiment.mean) / self.experiment.rows
+        print(coeffs)
+
+    def convert_symbols_to_numbers(self, combinations: Tuple[Tuple[str, List]]) -> deque:
+        """Method to convert symbols from the experiment plan into the numbers to
+            count the regression coefficients
+        :param combinations: combinations of the columns of the experiment plan in format
+            (('1', ['-', '+'.. ]), ('2', ['-', '-'])) where '1' and '2' are numbers of the
+            columns
+        :return the deque in the format deque([('1', [-1, 1..], ), (('2', [-1, -1..])..)])
+        """
+        combinations_result = deque()
+        for combination in combinations:
+            result = deque()
+            for symbol in combination[1]:
+                if symbol == self.SUBTRACTION_SYMBOL:
+                    result.append(-1)
+                elif symbol == self.ADD_SYMBOL:
+                    result.append(1)
+                elif symbol == self.ZERO_SYMBOL:
+                    result.append(0)
+            combinations_result.append((combination[0], result))
+        return combinations_result
 
 
 class Criteria:
