@@ -1,33 +1,35 @@
 import collections
 import random
-from typing import Tuple, List
+from typing import Tuple, List, Optional
+from string import ascii_uppercase
 
+import openpyxl
 from PySide2 import QtCore, QtWidgets, QtGui
 from PySide2.QtWidgets import QLineEdit, QTableWidget, QTableWidgetItem, QGroupBox, QLabel
 from dataclasses import dataclass
 
 from core.constants import VAR
+from core.experiment import Experiment
 from core.table_planner import TablePlanner
 
 
 class ControllersUtils:
     """Class to handle all elements controllers"""
 
-    def __init__(self):
-        self.utils = Utils()
+    def __init__(self, experiment):
+        self.experiment = experiment
+        self.utils = Utils(experiment)
 
     def disable_experiments_cells_by_number_of_factors(self, parameters_layout: QGroupBox,
-                                                       experiment: "Experiment",
                                                        factors: int):
         """Method to disable cells in the experiments layout by the factor.
            Method is the controller of the QLineEdit for number of the factors
 
         :param parameters_layout: main parameters layout
-        :param experiment: Experiment object to write in the experiment factors
         :param factors: number of the factors entered by the user
         """
 
-        experiment.factors = self.utils.cast_parameter_to_int(factors)
+        self.experiment.factors = self.utils.cast_parameter_to_int(factors)
         experiment_cells = self.utils.get_experiment_cells(parameters_layout)
 
         # todo: what is going on?
@@ -35,86 +37,90 @@ class ControllersUtils:
         d1_cells = experiment_cells[9:18][::-1]
         d2_cells = experiment_cells[18:][::-1]
 
-        if experiment.factors == 0:
-
-            experiment_cells = list(set(experiment_cells) - set(d2_cells)) if experiment.levels != 5 else \
-                               experiment_cells
+        if self.experiment.factors == 0:
+            experiment_cells = list(set(experiment_cells) - set(d2_cells)) \
+                if self.experiment.levels != 5 else experiment_cells
             list(map(
                 lambda cell: self.utils.set_enabled(cell, True),
                 experiment_cells))
         else:
             unused_cells = [
-                *x_cells[:-experiment.factors],
-                *d1_cells[:-experiment.factors],
-                *d2_cells[:-experiment.factors]]
+                *x_cells[:-self.experiment.factors],
+                *d1_cells[:-self.experiment.factors],
+                *d2_cells[:-self.experiment.factors]]
             list(map(
                 lambda cell: self.utils.set_enabled(cell),
                 unused_cells))
 
     def disable_experiments_cells_by_variation_level(self,
                                                      variation_levels_layout: QGroupBox,
-                                                     experiment: "Experiment",
                                                      variation_level: int):
         """Method to disable cells in the experiments layout by the variation_level.
            Method is the controller of the QLineEdit for number of the factors
 
         :param variation_levels_layout: variation levels layout
-        :param experiment: Experiment object
         :param variation_level: variation level entered by the user
         """
 
-        experiment.levels = self.utils.cast_parameter_to_int(variation_level)
+        self.experiment.levels = self.utils.cast_parameter_to_int(variation_level)
         experiment_cells = self.utils.get_experiment_cells(variation_levels_layout)
 
         # todo: what is d2 cells?
         d2_cells = experiment_cells[18:]
 
-        if experiment.levels != 5:
+        if self.experiment.levels != 5:
             list(map(
                 lambda cell: self.utils.set_enabled(cell),
                 d2_cells))
         else:
-            if experiment.factors == 9:
+            if self.experiment.factors == 9:
                 list(map(
                     lambda cell: self.utils.set_enabled(cell, True),
                     d2_cells))
             else:
                 list(map(
                     lambda cell: self.utils.set_enabled(cell, True),
-                    d2_cells[:experiment.factors]))
+                    d2_cells[:self.experiment.factors]))
 
-    def set_number_of_experiments(self, experiment: "Experiment", experiment_series: int):
+    def set_number_of_experiments(self, experiment_series: int):
         """Method to set the number of experiments to the Experiment object.
            Method is the controller of the QLineEdit for the number of experiment series
 
-        :param experiment: experiment object to set the experiment_series entered by user
         :param experiment_series: experiment series entered by the user
         """
 
-        experiment.count_of_experiments = self.utils. \
+        self.experiment.count_of_experiments = self.utils. \
             cast_parameter_to_int(experiment_series)
 
-    def create_experiment_table_plan(self, controllers_layout: "QGroupBox",
-                                     experiment: "Experiment"):
-        """Method to create the experiment table plan"""
+    def create_experiment_table_plan(self, controllers_layout: QGroupBox):
+        """Method to create the experiment table plan
+
+        :param controllers_layout: QGroupBox Object to get the table layout
+            regarding its position
+        """
 
         # todo: simplify this
         table = self.utils.get_experiment_table(controllers_layout)
 
-        plan = TablePlanner(experiment.levels, experiment.factors).create_table()
-        self.utils.set_experiment_plan(experiment, table, plan)
+        plan = TablePlanner(
+            self.experiment.levels, self.experiment.factors).create_table()
+        self.utils.set_experiment_plan(table, plan)
 
-    def calculate(self, current_layout, experiment):
+    def calculate(self, current_layout: QGroupBox):
         table = self.utils.get_experiment_table(current_layout)
-        self.utils.get_experiments_data(experiment, table)
+        self.utils.get_experiments_data(table)
 
-        statistics = experiment.calculate_statistics()
-        self.utils.set_statistics(table, experiment, statistics)
+        statistics = self.experiment.calculate_statistics()
+        self.utils.set_statistics(table, statistics)
 
-        self.utils.set_criteria(current_layout, experiment, max(statistics['t']))
+        self.utils.set_criteria(current_layout, max(statistics['t']))
 
 
 class Utils:
+
+    def __init__(self, experiment: Experiment):
+        self.experiment = experiment
+
     @staticmethod
     def get_elements(class_: dataclass, arguments: List = None):
         """Method to create elements of dataclass with arguments or not
@@ -182,22 +188,27 @@ class Utils:
         tab_widget = main_window.children()[-1]
         return tab_widget.findChild(QTableWidget)
 
-    def set_experiment_plan(self, experiment, table, plan):
-        for column, key in zip(range(experiment.factors), plan.keys()):
-            for row in range(experiment.rows):
+    def set_experiment_plan(self, table, plan):
+        for column, key in zip(range(self.experiment.factors), plan.keys()):
+            for row in range(self.experiment.rows):
                 table.setItem(row, column, QTableWidgetItem(
                     plan[key][row]))
 
-        self.set_table_headers(experiment, table)
+        self.set_table_headers(table)
         # TODO: algorithm to set color
         # set_table_color(experiment, table)
         # TODO: remove this
-        self.fill_random_numbers(experiment, table)
+        self.fill_random_numbers(table)
 
-    @staticmethod
-    def set_table_headers(experiment, table):
-        x = [f'x{i + 1}' for i in range(experiment.factors)]
-        y = [f'y{i + 1}' for i in range(experiment.count_of_experiments)]
+        if self.experiment.factors == 4 and \
+                self.experiment.count_of_experiments == 2 and \
+                self.experiment.levels == 2:
+            filepath = "/home/arthur/expla/src/main/python/test_experiments/chemicals.xlsx"
+            self.read_and_paste_from_excel(table, filepath)
+
+    def set_table_headers(self, table):
+        x = [f'x{i + 1}' for i in range(self.experiment.factors)]
+        y = [f'y{i + 1}' for i in range(self.experiment.count_of_experiments)]
         labels = x + y + VAR
 
         # TODO: add replace 100 on the COLUMNS variable
@@ -205,26 +216,44 @@ class Utils:
 
         table.setHorizontalHeaderLabels(labels)
 
-    @staticmethod
-    def fill_random_numbers(experiment, table):
-        for column in range(experiment.count_of_experiments):
-            for row in range(experiment.rows):
-                table.setItem(row, column + experiment.factors,
+    def fill_random_numbers(self, table):
+        for column in range(self.experiment.count_of_experiments):
+            for row in range(self.experiment.rows):
+                table.setItem(row, column + self.experiment.factors,
                               QTableWidgetItem(str(random.randint(-100, 100))))
 
-    @staticmethod
-    def get_experiments_data(experiment, table):
-        for column in range(experiment.count_of_experiments):
-            column_data = collections.deque()
-            for row in range(experiment.rows):
-                column_data.append(
-                    float(table.item(row, column + experiment.factors).text()))
-            experiment.experiments_data.append(column_data)
+    def read_and_paste_from_excel(self, table: QTableWidget, filepath: str):
+        book = openpyxl.load_workbook(filepath)
+        sheet = book.active
 
-    @staticmethod
-    def set_statistics(table, experiment, statistics):
-        start_column = experiment.factors + experiment.count_of_experiments + 1
-        for row in range(experiment.rows):
+        # indexes of the columns in excel are in the format A1, B1, C1.. AA1, AB1..
+        # here we get the last index of the column regarding the count of experiments
+        # TODO: add AA1 indexes
+        end_letter_index = ascii_uppercase[self.experiment.count_of_experiments-1:][0]
+        cells = sheet["A1": f"{end_letter_index}{self.experiment.rows}"]
+
+        # get the values of the cells from the Cell object in format
+        # [[row1value1, row1value2..], [row2value1, row2value2..].. ]
+        # to format
+        # [[column1value1, column1value2..], [column2value1, column2value2].. ]
+
+        cells = list(zip(*map(lambda x: [value.value for value in x], cells)))
+        for column in range(self.experiment.count_of_experiments):
+            for row in range(self.experiment.rows):
+                table.setItem(row, column + self.experiment.factors,
+                              QTableWidgetItem(str(cells[column][row])))
+
+    def get_experiments_data(self, table):
+        for column in range(self.experiment.count_of_experiments):
+            column_data = collections.deque()
+            for row in range(self.experiment.rows):
+                column_data.append(
+                    float(table.item(row, column + self.experiment.factors).text()))
+            self.experiment.experiments_data.append(column_data)
+
+    def set_statistics(self, table, statistics):
+        start_column = self.experiment.factors + self.experiment.count_of_experiments + 1
+        for row in range(self.experiment.rows):
             table.setItem(row, start_column, QTableWidgetItem(
                 str(statistics['mean'][row])))
             table.setItem(row, start_column + 1, QTableWidgetItem(
@@ -234,9 +263,8 @@ class Utils:
             table.setItem(row, start_column + 3, QTableWidgetItem(
                 str(statistics['t'][row])))
 
-    @staticmethod
-    def set_criteria(current_layout, experiment, t_max):
-        t_table = experiment.get_student_cirteria()
+    def set_criteria(self, current_layout, t_max):
+        t_table = self.experiment.get_student_cirteria()
 
         main_window = current_layout.parent()
         tab_widget = main_window.children()[-1]
@@ -250,7 +278,7 @@ class Utils:
             'не соблюдается'
 
         student_result_label.setText(
-            f't-табличное (α=0.05, df={experiment.count_of_experiments - 1}):\n'
+            f't-табличное (α=0.05, df={self.experiment.count_of_experiments - 1}):\n'
             f'{t_table}\n'
             f'Максимальное расчетное значение:\n'
             f'{t_max}\n\n'

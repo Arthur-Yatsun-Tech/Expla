@@ -6,8 +6,8 @@ from layouts.utils import Utils, ControllersUtils
 
 class BaseLayout(ABC):
     experiment = Experiment()
-    utils = Utils()
-    controllers = ControllersUtils()
+    utils = Utils(experiment)
+    controllers = ControllersUtils(experiment)
 
     def build_layout(self):
         """Create widgets and manipulate them"""

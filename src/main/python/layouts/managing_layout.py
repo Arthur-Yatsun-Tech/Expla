@@ -42,7 +42,6 @@ class ManagingLayout(BaseLayout):
 
     def connect_handlers(self, buttons):
         buttons.create_table_button.clicked.connect(
-            lambda: self.controllers.create_experiment_table_plan(self.main_layout,
-                                                                  self.experiment))
+            lambda: self.controllers.create_experiment_table_plan(self.main_layout))
         buttons.start_calculations_button.clicked.connect(
-            lambda: self.controllers.calculate(self.main_layout, self.experiment))
+            lambda: self.controllers.calculate(self.main_layout))

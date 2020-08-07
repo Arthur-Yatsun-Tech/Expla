@@ -62,15 +62,12 @@ class LevelsLayout(BaseLayout):
         radios.level5.clicked.connect(
             lambda: self.controllers.disable_experiments_cells_by_variation_level(
                 self.main_layout,
-                self.experiment,
                 radios.level5.text()))
         radios.level3.clicked.connect(
             lambda: self.controllers.disable_experiments_cells_by_variation_level(
                 self.main_layout,
-                self.experiment,
                 radios.level3.text()))
         radios.level2.clicked.connect(
             lambda: self.controllers.disable_experiments_cells_by_variation_level(
                 self.main_layout,
-                self.experiment,
                 radios.level2.text()))

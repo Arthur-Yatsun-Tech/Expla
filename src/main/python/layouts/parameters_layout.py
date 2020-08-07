@@ -83,11 +83,9 @@ class ParametersLayout(BaseLayout):
         lines.factors.textEdited.connect(
             lambda: self.controllers.disable_experiments_cells_by_number_of_factors(
                 self.main_layout,
-                self.experiment,
                 lines.factors.text()))
         lines.experiments.textEdited.connect(
             lambda: self.controllers.set_number_of_experiments(
-                self.experiment,
                 lines.experiments.text()))
 
     def set_lines_validators(self, lines):
