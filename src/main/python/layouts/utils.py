@@ -10,7 +10,7 @@ from core.constants import VAR
 from core.table_planner import TablePlanner
 
 
-class Controllers:
+class ControllersUtils:
     """Class to handle all elements controllers"""
 
     def __init__(self):
