@@ -31,7 +31,7 @@ class Utils:
         self.set_experiment_table_headers(table)
         # TODO: algorithm to set color
         # set_table_color(experiment, table)
-        # TODO: remove this
+        # TODO: remove this after tests
         self.fill_random_numbers(table)
 
         if self.experiment.factors == 4 and \
