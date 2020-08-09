@@ -27,10 +27,11 @@ class Calculator:
             variation.append(self.calculate_dispersion(experiment, mean[-1]))
             std.append(sqrt(variation[-1]))
 
-        max_std = max(std)
+        max_variation = max(variation)
         for experiment in zip(*self.experiment.experiments_data):
+            print(experiment)
             student_criteria.append((max(experiment) - self.calculate_mean(experiment)) /
-                     sqrt(max_std))
+                     sqrt(max_variation))
 
         self.experiment.set_mean(mean)
         self.experiment.set_variation(variation)
@@ -41,7 +42,7 @@ class Calculator:
             {'mean': mean,
              'variation': variation,
              'std': std,
-             't': student_criteria}).round(3)
+             't': student_criteria})
 
     @staticmethod
     def calculate_mean(data):

@@ -49,7 +49,7 @@ class Experiment:
 
         # TODO: Only for test proposals, remove it
         self.factors = 4
-        self.count_of_experiments = 2
+        self.count_of_experiments = 3
         self.levels = 2
 
     @property

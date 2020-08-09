@@ -40,6 +40,13 @@ class Utils:
             filepath = "/home/arthur/expla/src/main/python/test_xlsx_files/chemicals.xlsx"
             self.read_and_paste_from_excel(table, filepath)
 
+        if self.experiment.factors == 4 and \
+                self.experiment.count_of_experiments == 3 and \
+                self.experiment.levels == 2:
+            filepath = "/home/arthur/expla/src/main/python/test_xlsx_files/exp_data.xlsx"
+            self.read_and_paste_from_excel(table, filepath)
+
+
     def set_statistics_data(self, table, statistics):
         start_column = self.experiment.factors + self.experiment.count_of_experiments + 1
         for row in range(self.experiment.rows):
