@@ -104,6 +104,19 @@ class Utils:
             regression_table.setItem(row, 2, QTableWidgetItem(
                 str(coeffs[str(name)][1])))
 
+        coeffs_names = sorted(
+            map(lambda x: int(x), self.experiment.optimized_regression_coeffs.keys()))
+        coeffs = self.experiment.optimized_regression_coeffs
+        for row, name in zip(range(self.experiment.rows), coeffs_names):
+            regression_table.setItem(row, 4, QTableWidgetItem(
+                'b' + str(name)))
+            # set the optimized regression coeff
+            regression_table.setItem(row, 5, QTableWidgetItem(
+                str(coeffs[str(name)][0])))
+            # set the optimized regression interval
+            regression_table.setItem(row, 6, QTableWidgetItem(
+                str(coeffs[str(name)][1])))
+
     def set_experiment_table_headers(self, table):
         x = [f'x{i + 1}' for i in range(self.experiment.factors)]
         y = [f'y{i + 1}' for i in range(self.experiment.count_of_experiments)]
