@@ -59,12 +59,13 @@ class Utils:
                 str(self.experiment.variation[row])))
             table.setItem(row, start_column + 2, QTableWidgetItem(
                 str(self.experiment.std[row])))
+            # TODO: move it to the criteria layout
             table.setItem(row, start_column + 3, QTableWidgetItem(
                 str(self.experiment.student_criteria[row])))
 
     def set_criteria(self, current_layout, t_max):
         """Method to set the criteria results in the criteria labels"""
-        t_table = self.experiment.calculator.get_student_table_value(
+        t_table = self.experiment.get_student_table_value(
             self.experiment.count_of_experiments - 1)
         main_window = current_layout.parent()
         tab_widget = main_window.children()[-1]

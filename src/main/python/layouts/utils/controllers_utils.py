@@ -100,8 +100,9 @@ class ControllersUtils:
         experiment_table = self.utils.get_experiment_table(controllers_layout)
         self.utils.get_experiments_data(experiment_table)
         self.experiment.calculate_statistics()
+        self.experiment.calculate_criteria()
         self.utils.set_statistics_data(experiment_table)
-        
+
         # TODO: refactor set_criteria method
         self.utils.set_criteria(controllers_layout, self.experiment.max_student_value)
 

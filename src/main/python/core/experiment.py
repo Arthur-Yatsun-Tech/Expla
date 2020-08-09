@@ -30,6 +30,8 @@ class Experiment:
         :param std: standard derivation of the experiments
         :param student_criteria: student criteria of the experiments
         """
+        self._calculator = Calculator(self)
+
         self.factors = factors
         self.count_of_experiments = count_of_experiments
         self.levels = levels
@@ -49,10 +51,6 @@ class Experiment:
         self.factors = 4
         self.count_of_experiments = 3
         self.levels = 2
-
-    @property
-    def calculator(self):
-        return Calculator(self)
 
     @property
     def rows(self):
@@ -109,8 +107,21 @@ class Experiment:
 
     def calculate_statistics(self):
         """Method to calculate statistics of the experiment"""
-        self.calculator.calculate_statistics()
+        self._calculator.calculate_statistics()
+
+    def calculate_criteria(self):
+        """Method to calculate the criteria of the experiment """
+        self._calculator.calculate_student_criteria()
 
     def calculate_regression_coeffs(self) -> Dict:
         """Method to calculate the regression coefficients for the experiment"""
-        return self.calculator.calculate_regression_coeffs()
+        return self._calculator.calculate_regression_coeffs()
+
+    def get_student_table_value(self, df, probability=0.025):
+        """Method to get the table value of the student criteria
+
+        :param df: degree of freedom
+        :param probability: probability of the distribution from the one side:
+            0.025 -> 0.005 in common
+        """
+        return self._calculator.get_student_table_value(df, probability)
