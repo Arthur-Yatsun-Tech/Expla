@@ -2,6 +2,7 @@ from collections import deque, defaultdict
 from typing import List, Optional, Dict
 
 from core.calculator import Calculator
+from core.table_planner import TablePlanner
 
 
 class Experiment:

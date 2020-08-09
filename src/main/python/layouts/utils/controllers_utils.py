@@ -22,7 +22,6 @@ class ControllersUtils:
         self.experiment.factors = self.utils.cast_parameter_to_int(factors)
         experiment_cells = self.utils.get_experiment_cells(parameters_layout)
 
-        # todo: what is going on?
         x_cells = experiment_cells[:9][::-1]
         d1_cells = experiment_cells[9:18][::-1]
         d2_cells = experiment_cells[18:][::-1]
@@ -89,6 +88,7 @@ class ControllersUtils:
         table = self.utils.get_experiment_table(controllers_layout)
         plan = TablePlanner(
             self.experiment.levels, self.experiment.factors).create_table()
+        self.experiment.set_experiments_plan(plan)
 
         self.utils.set_experiment_plan(table, plan)
 

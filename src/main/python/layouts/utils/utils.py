@@ -5,7 +5,6 @@ from string import ascii_uppercase
 import openpyxl
 from PySide2.QtWidgets import QTableWidget, QTableWidgetItem, QGroupBox, QLabel
 
-from core.constants import VAR
 from core.experiment import Experiment
 
 
@@ -21,8 +20,6 @@ class Utils:
         :param table: table widget
         :param plan: experiment plan
         """
-        self.experiment.set_experiments_plan(plan)
-
         for column, key in zip(range(self.experiment.factors), sorted(plan.keys())):
             for row in range(self.experiment.rows):
                 table.setItem(row, column, QTableWidgetItem(
@@ -120,7 +117,7 @@ class Utils:
     def set_experiment_table_headers(self, table):
         x = [f'x{i + 1}' for i in range(self.experiment.factors)]
         y = [f'y{i + 1}' for i in range(self.experiment.count_of_experiments)]
-        labels = x + y + VAR
+        labels = x + y + ['', 'x̅', 'σ²', 'σ', 't']
 
         # TODO: add replace 100 on the COLUMNS variable
         [labels.append('') for _ in range(100 - len(labels))]
