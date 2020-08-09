@@ -1,5 +1,5 @@
-import collections
 import random
+from collections import deque, defaultdict
 from string import ascii_uppercase
 
 import openpyxl
@@ -15,7 +15,7 @@ class Utils:
     def __init__(self, experiment: Experiment):
         self.experiment = experiment
 
-    def set_experiment_plan(self, table: QTableWidget, plan: collections.defaultdict):
+    def set_experiment_plan(self, table: QTableWidget, plan: defaultdict):
         """Method to set the experiment plan into the table layout
 
         :param table: table widget
@@ -119,9 +119,9 @@ class Utils:
 
         :param table: experiment table widget
         """
-        experiments_data = []
+        experiments_data = deque()
         for column in range(self.experiment.count_of_experiments):
-            column_data = collections.deque()
+            column_data = deque()
             for row in range(self.experiment.rows):
                 column_data.append(
                     float(table.item(row, column + self.experiment.factors).text()))

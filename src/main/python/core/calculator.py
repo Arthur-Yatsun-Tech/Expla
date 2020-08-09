@@ -1,12 +1,14 @@
 import itertools
-from collections import deque
+from collections import deque, defaultdict
+from copy import deepcopy
 from math import sqrt
-from typing import Tuple, List
+from typing import Tuple, List, Dict, Optional
 
 from scipy.stats import t
 
 
 class Calculator:
+    """Class to do experiment calculations"""
 
     SUBTRACTION_SYMBOL = '-'
     ADD_SYMBOL = '+'
@@ -18,68 +20,79 @@ class Calculator:
         """
         self.experiment = experiment
 
-    def calculate_statistics(self):
-        """Method to calculate statistics of the experiment - mean, variation, std"""
-        mean = []
-        variation = []
-        std = []
+    def calculate_statistics(self, experiments_data: deque) -> Tuple[deque, deque, deque]:
+        """Method to calculate statistics of the experiment - mean, variation, std
 
-        for experiment_row in zip(*self.experiment.experiments_data):
+        :param experiments_data: numeric result of the experiments
+        """
+        mean = deque()
+        variation = deque()
+        std = deque()
+
+        for experiment_row in zip(*experiments_data):
             mean.append(self._calculate_mean(experiment_row))
-            variation.append(self._calculate_dispersion(experiment_row, mean[-1]))
+            variation.append(self._calculate_variation(experiment_row, mean[-1]))
             std.append(sqrt(variation[-1]))
 
-        self.experiment.set_mean(mean)
-        self.experiment.set_variation(variation)
-        self.experiment.set_std(std)
+        return mean, variation, std
 
-    def calculate_student_criteria(self):
-        """Method to calculate student criteria"""
-        student_criteria = []
+    def calculate_student_criteria(self, experiments_data: deque) -> deque:
+        """Method to calculate student criteria
 
-        for experiment_row in zip(*self.experiment.experiments_data):
+        :param experiments_data: numeric result of the experiments
+        """
+        student_criteria = deque()
+
+        for experiment_row in zip(*experiments_data):
             student_criteria.append(
                 (max(experiment_row) - self._calculate_mean(experiment_row))
                 / sqrt(self.experiment.max_variation_value))
-        self.experiment.set_student_criteria(student_criteria)
+        return student_criteria
 
     @staticmethod
-    def _calculate_mean(data):
+    def _calculate_mean(data: Tuple) -> float:
+        """Method to calculate mean value"""
         return sum(data) / len(data)
 
     @staticmethod
-    def _calculate_dispersion(data, mean):
+    def _calculate_variation(data: Tuple, mean: float) -> float:
+        """Method to calculate variation value"""
         sum_ = 0
         for element in data:
             sum_ += (element - mean) ** 2
         return sum_ / (len(data) - 1)
 
-    def calculate_regression_coeffs(self, round_value=4):
+    def calculate_regression_coeffs(self,
+                                    experiments_plan: defaultdict,
+                                    factors: int, mean: List[float],
+                                    rows: int, round_value=4) -> Dict[str, List[float]]:
         """Method to calculate regression coefficients
 
+        :param experiments_plan: plan of the experiment
+        :param factors: experiment factors
+        :param mean: the list of the mean values by each of the experiment rows
+        :param rows: the count of the rows in the table (N value)
         :param round_value: value for round the regression coeffs
         """
         coeffs = {}
         regression_intervals = self.calculate_regression_intervals()
 
-        plan = self.experiment.experiments_plan
+        plan = experiments_plan
         # create the list of tuples of the sorted columns of plan
         plan = [(key[-1], plan[key]) for key in sorted(plan.keys())]
 
         # get the b0 coeff
         coeffs['0'] = [
-            round(sum(self.experiment.mean) / self.experiment.rows, round_value),
+            round(sum(mean) / rows, round_value),
             regression_intervals.popleft(),
         ]
-
-        for index in range(1, self.experiment.factors + 1):
+        for index in range(1, factors + 1):
             # create the combinations for columns in plan regarding the index value
             combinations = list(itertools.combinations(plan, index))
 
             for combination in combinations:
                 converted_combination = self.convert_symbols_to_numbers(combination)
                 coeff_name = ''
-
                 # create coefficient name
                 for data_column in converted_combination:
                     coeff_name += data_column[0]
@@ -97,13 +110,33 @@ class Calculator:
 
                 # count coefficients
                 coeff_result = sum(comb * ex_mean for comb, ex_mean in
-                    zip(passing_combinations, self.experiment.mean)) / self.experiment.rows
+                    zip(passing_combinations, mean)) / rows
 
                 coeffs[coeff_name] = [
                     round(coeff_result, round_value),
                     regression_intervals.popleft(),
                 ]
-        self.experiment.set_regression_coeffs(coeffs)
+        self.optimize_regression_coeffs(coeffs)
+        return coeffs
+
+    @staticmethod
+    def optimize_regression_coeffs(regression_coeffs: Dict) -> Dict[str, List]:
+        """Method to optimize regression coefficients
+
+        :param regression_coeffs: counted regression coefficients
+        """
+
+        regression_coeffs = deepcopy(regression_coeffs)
+        unoptimized_coeffs_keys = deque()
+
+        for key, coeff_data in regression_coeffs.items():
+            coeff, interval = coeff_data
+            if abs(coeff) < abs(interval):
+                unoptimized_coeffs_keys.append(key)
+
+        # remove unoptimized coefficients
+        [regression_coeffs.pop(key, None) for key in unoptimized_coeffs_keys]
+        return regression_coeffs
 
     def convert_symbols_to_numbers(self, combinations: Tuple[Tuple[str, List]]) -> deque:
         """Method to convert symbols from the experiment plan into the numbers to

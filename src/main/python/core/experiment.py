@@ -1,4 +1,4 @@
-import collections
+from collections import deque, defaultdict
 from typing import List, Optional, Dict
 
 from core.calculator import Calculator
@@ -10,9 +10,10 @@ class Experiment:
     def __init__(self, factors: int = 9,
                  count_of_experiments: int = 3,
                  levels: int = 5,
-                 experiments_data: Optional[List[collections.deque]] = None,
-                 experiments_plan: Optional[collections.defaultdict] = None,
+                 experiments_data: Optional[deque] = None,
+                 experiments_plan: Optional[defaultdict] = None,
                  regression_coeffs: Optional[Dict] = None,
+                 optimized_regression_coeffs: Optional[Dict] = None,
                  mean: Optional[List] = None,
                  variation: Optional[List] = None,
                  std: Optional[List] = None,
@@ -40,6 +41,7 @@ class Experiment:
         self.experiments_data = experiments_data
         self.experiments_plan = experiments_plan
         self.regression_coeffs = regression_coeffs
+        self.optimized_regression_coeffs = optimized_regression_coeffs
 
         # statistics
         self.mean = mean
@@ -77,46 +79,32 @@ class Experiment:
         else:
             return 0
 
-    def set_experiments_data(self, experiments_data: List[collections.deque]):
+    def set_experiments_data(self, experiments_data: deque):
         """Method to set experiments data"""
         self.experiments_data = experiments_data
 
-    def set_experiments_plan(self, experiments_plan: collections.defaultdict):
+    def set_experiments_plan(self, experiments_plan: defaultdict):
         """Method to set the experiments plan"""
         self.experiments_plan = experiments_plan
 
-    def set_regression_coeffs(self, regression_coeffs: Dict):
-        """Method to set regression coeffs"""
-        self.regression_coeffs = regression_coeffs
-
-    def set_mean(self, mean: List):
-        """Method to set mean"""
-        self.mean = mean
-
-    def set_variation(self, variation: List):
-        """Method to set variation"""
-        self.variation = variation
-
-    def set_std(self, std: List):
-        """Method to set std"""
-        self.std = std
-
-    def set_student_criteria(self, student_criteria: List):
-        """Method to set student criteria"""
-        self.student_criteria = student_criteria
-
     def calculate_statistics(self):
         """Method to calculate statistics of the experiment"""
-        self._calculator.calculate_statistics()
+        self.mean, self.variation, self.std = \
+            self._calculator.calculate_statistics(self.experiments_data)
 
     def calculate_criteria(self):
         """Method to calculate the criteria of the experiment """
-        self._calculator.calculate_student_criteria()
+        self.student_criteria = \
+            self._calculator.calculate_student_criteria(self.experiments_data)
 
-    def calculate_regression_coeffs(self) -> Dict:
+    def calculate_regression_coeffs(self):
         """Method to calculate the regression coefficients for the experiment"""
-        self._calculator.calculate_regression_intervals()
-        return self._calculator.calculate_regression_coeffs()
+        self.regression_coeffs = self._calculator.calculate_regression_coeffs(
+            self.experiments_plan, self.factors, self.mean, self.rows)
+
+    def optimize_regression_coeffs(self):
+        self.optimized_regression_coeffs = self._calculator.optimize_regression_coeffs(
+            self.regression_coeffs)
 
     def get_student_table_value(self, df, probability=0.025):
         """Method to get the table value of the student criteria
