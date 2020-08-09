@@ -115,6 +115,7 @@ class Experiment:
 
     def calculate_regression_coeffs(self) -> Dict:
         """Method to calculate the regression coefficients for the experiment"""
+        self._calculator.calculate_regression_intervals()
         return self._calculator.calculate_regression_coeffs()
 
     def get_student_table_value(self, df, probability=0.025):
@@ -124,4 +125,4 @@ class Experiment:
         :param probability: probability of the distribution from the one side:
             0.025 -> 0.005 in common
         """
-        return self._calculator.get_student_table_value(df, probability)
+        return self._calculator.get_student_table_value(df, probability=probability)

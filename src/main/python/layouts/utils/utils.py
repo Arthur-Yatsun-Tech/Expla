@@ -46,7 +46,7 @@ class Utils:
             filepath = "/home/arthur/expla/src/main/python/test_xlsx_files/exp_data.xlsx"
             self.read_and_paste_from_excel(table, filepath)
 
-    def set_statistics_data(self, table):
+    def set_statistics_data_in_table(self, table):
         """Method to set statistics data into the experiment table
 
         :param table: experiment table
@@ -63,7 +63,7 @@ class Utils:
             table.setItem(row, start_column + 3, QTableWidgetItem(
                 str(self.experiment.student_criteria[row])))
 
-    def set_criteria(self, current_layout, t_max):
+    def set_criteria_in_table(self, current_layout, t_max):
         """Method to set the criteria results in the criteria labels"""
         t_table = self.experiment.get_student_table_value(
             self.experiment.count_of_experiments - 1)
@@ -85,7 +85,7 @@ class Utils:
             f'{t_max}\n\n'
             f'Условие t-расчетное < t-табличное {result}')
 
-    def set_regression_coeffs(self, regression_table: QTableWidget):
+    def set_regression_coeffs_in_table(self, regression_table: QTableWidget):
         """Method to set the regression coefficients
 
         :param regression_table: regression table to set the coeffs
@@ -97,8 +97,12 @@ class Utils:
         for row, name in zip(range(self.experiment.rows), coeffs_names):
             regression_table.setItem(row, 0, QTableWidgetItem(
                 'b' + str(name)))
+            # set the regression coeff
             regression_table.setItem(row, 1, QTableWidgetItem(
-                str(coeffs[str(name)])))
+                str(coeffs[str(name)][0])))
+            # set the regression interval
+            regression_table.setItem(row, 2, QTableWidgetItem(
+                str(coeffs[str(name)][1])))
 
     def set_experiment_table_headers(self, table):
         x = [f'x{i + 1}' for i in range(self.experiment.factors)]
