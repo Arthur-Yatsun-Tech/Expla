@@ -99,10 +99,11 @@ class ControllersUtils:
         """
         experiment_table = self.utils.get_experiment_table(controllers_layout)
         self.utils.get_experiments_data(experiment_table)
-        statistics = self.experiment.calculate_statistics()
-        self.utils.set_statistics_data(experiment_table, statistics)
-
-        self.utils.set_criteria(controllers_layout, max(statistics['t']))
+        self.experiment.calculate_statistics()
+        self.utils.set_statistics_data(experiment_table)
+        
+        # TODO: refactor set_criteria method
+        self.utils.set_criteria(controllers_layout, self.experiment.max_student_value)
 
         regression_table = self.utils.get_regression_table(controllers_layout)
         self.experiment.calculate_regression_coeffs()

@@ -3,7 +3,6 @@ from collections import deque
 from math import sqrt
 from typing import Tuple, List
 
-import pandas as pd
 from scipy.stats import t
 
 
@@ -15,34 +14,27 @@ class Calculator:
 
     def __init__(self, experiment):
         self.experiment = experiment
+        self.mean = []
+        self.variation = []
+        self.std = []
+        self.student_criteria = []
 
-    def calculate_statistics(self) -> pd.DataFrame:
-        mean = []
-        variation = []
-        std = []
-        student_criteria = []
+    def calculate_statistics(self):
+        for experiment_row in zip(*self.experiment.experiments_data):
+            self.mean.append(self.calculate_mean(experiment_row))
+            self.variation.append(self.calculate_dispersion(experiment_row, self.mean[-1]))
+            self.std.append(sqrt(self.variation[-1]))
 
-        for experiment in zip(*self.experiment.experiments_data):
-            mean.append(self.calculate_mean(experiment))
-            variation.append(self.calculate_dispersion(experiment, mean[-1]))
-            std.append(sqrt(variation[-1]))
+        self.experiment.set_mean(self.mean)
+        self.experiment.set_variation(self.variation)
+        self.experiment.set_std(self.std)
 
-        max_variation = max(variation)
-        for experiment in zip(*self.experiment.experiments_data):
-            print(experiment)
-            student_criteria.append((max(experiment) - self.calculate_mean(experiment)) /
-                     sqrt(max_variation))
+        for experiment_row in zip(*self.experiment.experiments_data):
+            self.student_criteria.append(
+                (max(experiment_row) - self.calculate_mean(experiment_row))
+                / sqrt(self.experiment.max_variation_value))
 
-        self.experiment.set_mean(mean)
-        self.experiment.set_variation(variation)
-        self.experiment.set_std(std)
-        self.experiment.set_student_criteria(student_criteria)
-
-        return pd.DataFrame(
-            {'mean': mean,
-             'variation': variation,
-             'std': std,
-             't': student_criteria})
+        self.experiment.set_student_criteria(self.student_criteria)
 
     @staticmethod
     def calculate_mean(data):
@@ -115,10 +107,12 @@ class Calculator:
             combinations_result.append((combination[0], result))
         return combinations_result
 
-
-class Criteria:
-    """"""
-
     @staticmethod
-    def get_student_table_value(df):
-        return abs(t.ppf(0.025, df))
+    def get_student_table_value(df, probability=0.025):
+        """Method to get the table value of the student criteria
+
+        :param df: degree of freedom
+        :param probability: probability of the distribution from the one side:
+            0.025 -> 0.005 in common
+        """
+        return abs(t.ppf(probability, df))

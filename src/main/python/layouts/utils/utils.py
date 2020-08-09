@@ -46,26 +46,30 @@ class Utils:
             filepath = "/home/arthur/expla/src/main/python/test_xlsx_files/exp_data.xlsx"
             self.read_and_paste_from_excel(table, filepath)
 
+    def set_statistics_data(self, table):
+        """Method to set statistics data into the experiment table
 
-    def set_statistics_data(self, table, statistics):
+        :param table: experiment table
+        """
         start_column = self.experiment.factors + self.experiment.count_of_experiments + 1
         for row in range(self.experiment.rows):
             table.setItem(row, start_column, QTableWidgetItem(
-                str(statistics['mean'][row])))
+                str(self.experiment.mean[row])))
             table.setItem(row, start_column + 1, QTableWidgetItem(
-                str(statistics['variation'][row])))
+                str(self.experiment.variation[row])))
             table.setItem(row, start_column + 2, QTableWidgetItem(
-                str(statistics['std'][row])))
+                str(self.experiment.std[row])))
             table.setItem(row, start_column + 3, QTableWidgetItem(
-                str(statistics['t'][row])))
+                str(self.experiment.student_criteria[row])))
 
     def set_criteria(self, current_layout, t_max):
-        t_table = self.experiment.get_student_cirteria()
-
+        """Method to set the criteria results in the criteria labels"""
+        t_table = self.experiment.calculator.get_student_table_value(
+            self.experiment.count_of_experiments - 1)
         main_window = current_layout.parent()
         tab_widget = main_window.children()[-1]
-        critera_widget = tab_widget.findChildren(QGroupBox)[0]
-        labels = critera_widget.findChildren(QLabel)
+        criteria_widget = tab_widget.findChildren(QGroupBox)[0]
+        labels = criteria_widget.findChildren(QLabel)
 
         student_result_label = labels[1]
         fisher_result_label = labels[2]

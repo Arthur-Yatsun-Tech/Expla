@@ -1,9 +1,7 @@
 import collections
 from typing import List, Optional, Dict
 
-from pandas import DataFrame
-
-from core.calculator import Calculator, Criteria
+from core.calculator import Calculator
 
 
 class Experiment:
@@ -58,8 +56,28 @@ class Experiment:
 
     @property
     def rows(self):
+        """Property to get the count of the rows in the table
+            if the levels == 5 and the factors is greater or equals than 5 use the
+            shortened table
+        """
         return self.factors * 25 if self.levels == 5 and self.factors >= 5 else \
                self.levels ** self.factors
+
+    @property
+    def max_variation_value(self):
+        """Property to get the max variation value from the variation list"""
+        if self.variation:
+            return max(self.variation)
+        else:
+            return 0
+
+    @property
+    def max_student_value(self):
+        """Property to get the max value of the student criteria"""
+        if self.student_criteria:
+            return max(self.student_criteria)
+        else:
+            return 0
 
     def set_experiments_data(self, experiments_data: List[collections.deque]):
         """Method to set experiments data"""
@@ -89,15 +107,10 @@ class Experiment:
         """Method to set student criteria"""
         self.student_criteria = student_criteria
 
-    def calculate_statistics(self) -> DataFrame:
+    def calculate_statistics(self):
         """Method to calculate statistics of the experiment"""
-        return self.calculator.calculate_statistics()
+        self.calculator.calculate_statistics()
 
     def calculate_regression_coeffs(self) -> Dict:
         """Method to calculate the regression coefficients for the experiment"""
         return self.calculator.calculate_regression_coeffs()
-
-    # todo: make general criteria calculations
-    def get_student_cirteria(self):
-        df = self.count_of_experiments - 1
-        return Criteria.get_student_table_value(df)
