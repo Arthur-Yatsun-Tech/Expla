@@ -97,12 +97,10 @@ class Experiment:
         self.student_criteria = \
             self._calculator.calculate_student_criteria(self.experiments_data)
 
-    def calculate_regression_coeffs(self):
+    def calculate_and_optimize_regression_coeffs(self):
         """Method to calculate the regression coefficients for the experiment"""
         self.regression_coeffs = self._calculator.calculate_regression_coeffs(
             self.experiments_plan, self.factors, self.mean, self.rows)
-
-    def optimize_regression_coeffs(self):
         self.optimized_regression_coeffs = self._calculator.optimize_regression_coeffs(
             self.regression_coeffs)
 

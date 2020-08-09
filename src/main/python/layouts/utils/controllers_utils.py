@@ -109,5 +109,5 @@ class ControllersUtils:
             controllers_layout, self.experiment.max_student_value)
 
         regression_table = self.utils.get_regression_table(controllers_layout)
-        self.experiment.calculate_regression_coeffs()
+        self.experiment.calculate_and_optimize_regression_coeffs()
         self.utils.set_regression_coeffs_in_table(regression_table)
