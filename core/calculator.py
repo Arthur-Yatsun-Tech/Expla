@@ -116,7 +116,6 @@ class Calculator:
                     round(coeff_result, round_value),
                     regression_intervals.popleft(),
                 ]
-        self.optimize_regression_coeffs(coeffs)
         return coeffs
 
     @staticmethod
