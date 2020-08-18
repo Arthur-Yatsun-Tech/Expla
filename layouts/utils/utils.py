@@ -34,13 +34,13 @@ class Utils:
         if self.experiment.factors == 4 and \
                 self.experiment.count_of_experiments == 2 and \
                 self.experiment.levels == 2:
-            filepath = "/home/arthur/expla/src/main/python/test_xlsx_files/chemicals.xlsx"
+            filepath = "/python/test_xlsx_files/chemicals.xlsx"
             self.read_and_paste_from_excel(table, filepath)
 
         if self.experiment.factors == 4 and \
                 self.experiment.count_of_experiments == 3 and \
                 self.experiment.levels == 2:
-            filepath = "/home/arthur/expla/src/main/python/test_xlsx_files/exp_data.xlsx"
+            filepath = "/python/test_xlsx_files/exp_data.xlsx"
             self.read_and_paste_from_excel(table, filepath)
 
     def set_statistics_data_in_table(self, table):

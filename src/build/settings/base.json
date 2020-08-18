@@ -1,6 +1,0 @@
-{
-    "app_name": "expla",
-    "author": "Arthur Yatsun",
-    "main_module": "src/main/python/main.py",
-    "version": "0.0.0"
-}
