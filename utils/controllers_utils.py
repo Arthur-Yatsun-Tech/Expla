@@ -1,7 +1,7 @@
 from PySide2.QtWidgets import QGroupBox
 
 from core.table_planner import TablePlanner
-from layouts.utils.layouts_utils import LayoutsUtils
+from utils.layouts_utils import LayoutsUtils
 
 
 class ControllersUtils:
