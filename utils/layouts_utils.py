@@ -5,7 +5,7 @@ from PySide2.QtWidgets import QLineEdit, QTableWidget
 from dataclasses import dataclass
 
 from core.experiment import Experiment
-from layouts.utils.utils import Utils
+from utils.utils import Utils
 
 
 class LayoutsUtils(Utils):
