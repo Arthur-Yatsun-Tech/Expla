@@ -133,9 +133,23 @@ class Calculator:
             if abs(coeff) < abs(interval):
                 unoptimized_coeffs_keys.append(key)
 
-        # remove unoptimized coefficients
-        [regression_coeffs.pop(key, None) for key in unoptimized_coeffs_keys]
-        return regression_coeffs
+        # remove unoptimized coefficients and save it in new variable
+        unoptimized_coeffs = \
+            {key: regression_coeffs.pop(key, None) for key in unoptimized_coeffs_keys}
+
+        return regression_coeffs, unoptimized_coeffs
+
+    @staticmethod
+    def distribute_the_reminder_from_unsuitable_coeffs(
+            optimized_coeffs: Dict[str, List],
+            unsuitable_coeffs: Dict[str, List]):
+        """Method to distribute the reminder"""
+        sum_of_unsuitable = sum(value[0] for value in unsuitable_coeffs.values())
+        reminder = sum_of_unsuitable / len(unsuitable_coeffs)
+
+        # distribute reminder
+        for key in optimized_coeffs.keys():
+            optimized_coeffs[key][0] += reminder
 
     def convert_symbols_to_numbers(self, combinations: Tuple[Tuple[str, List]]) -> deque:
         """Method to convert symbols from the experiment plan into the numbers to

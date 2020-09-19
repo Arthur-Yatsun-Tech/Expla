@@ -9,7 +9,6 @@ COLUMNS = 40
 COLUMN_WIDTH = 60
 
 
-
 @dataclass
 class Table:
     table: QTableWidget
@@ -23,7 +22,7 @@ class RegressionCoeffsLayout(BaseLayout):
     titles_names = (
         "Regression coefficients",
         "Optimized coefficients",
-        "Bad coefficients"
+        "Unsuitable coefficients"
     )
 
     def __init__(self):
