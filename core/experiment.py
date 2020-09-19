@@ -15,6 +15,7 @@ class Experiment:
                  experiments_plan: Optional[defaultdict] = None,
                  regression_coeffs: Optional[Dict] = None,
                  optimized_regression_coeffs: Optional[Dict] = None,
+                 unsuitable_regression_coeffs: Optional[Dict] = None,
                  mean: Optional[List] = None,
                  variation: Optional[List] = None,
                  std: Optional[List] = None,
@@ -43,6 +44,7 @@ class Experiment:
         self.experiments_plan = experiments_plan
         self.regression_coeffs = regression_coeffs
         self.optimized_regression_coeffs = optimized_regression_coeffs
+        self.unsuitable_regression_coeffs = unsuitable_regression_coeffs
 
         # statistics
         self.mean = mean
@@ -102,8 +104,13 @@ class Experiment:
         """Method to calculate the regression coefficients for the experiment"""
         self.regression_coeffs = self._calculator.calculate_regression_coeffs(
             self.experiments_plan, self.factors, self.mean, self.rows)
-        self.optimized_regression_coeffs = self._calculator.optimize_regression_coeffs(
-            self.regression_coeffs)
+        self.optimized_regression_coeffs, self.unsuitable_regression_coeffs = \
+            self._calculator.optimize_regression_coeffs(self.regression_coeffs)
+
+        self._calculator.distribute_the_reminder_from_unsuitable_coeffs(
+            self.optimized_regression_coeffs,
+            self.unsuitable_regression_coeffs
+        )
 
     def get_student_table_value(self, df, probability=0.025):
         """Method to get the table value of the student criteria
