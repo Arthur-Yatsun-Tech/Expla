@@ -13,9 +13,9 @@ class Layouts:
 
 class MainLayout(BaseLayout):
     def __init__(self):
-        self.main_layout = self.build_result()
+        self.main_layout = self.build_layout()
 
-    def build_result(self):
+    def build_layout(self):
         layouts = self.utils.get_elements(Layouts)
         layouts.main_inner_layout.setColumnStretch(0, 1)
         layouts.main_inner_layout.setColumnStretch(1, 3)
@@ -23,7 +23,7 @@ class MainLayout(BaseLayout):
         return self.compose_layout(layouts)
 
     @staticmethod
-    def compose_layout(layouts):
+    def compose_layout(layouts: Layouts):
         parameters_layout = ParametersLayout().main_layout
         levels_layout = LevelsLayout().main_layout
         experiment_layout = ExperimentLayout().main_layout

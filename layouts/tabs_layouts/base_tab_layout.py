@@ -1,4 +1,4 @@
-from PySide2.QtWidgets import QTabWidget, QWidget
+from PySide2.QtWidgets import QTabWidget
 from dataclasses import dataclass
 
 from layouts import BaseLayout

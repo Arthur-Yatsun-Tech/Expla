@@ -1,7 +1,7 @@
 from typing import List, Tuple
 
 from PySide2 import QtGui, QtCore, QtWidgets
-from PySide2.QtWidgets import QLineEdit, QTableWidget
+from PySide2.QtWidgets import QLineEdit, QTableWidget, QTableWidgetItem
 from dataclasses import dataclass
 
 from core.experiment import Experiment
@@ -90,6 +90,20 @@ class LayoutsUtils(Utils):
         """
         table.setRowCount(rows)
         table.setColumnCount(columns)
+
+    @staticmethod
+    def set_table_span(table: QTableWidget,
+                       row: int,
+                       column: int,
+                       row_span: int,
+                       column_span: int):
+        """Method to set span to table cell"""
+        table.setSpan(row, column, row_span, column_span)
+
+    @staticmethod
+    def set_table_item(table: QTableWidget, row: int, column: int, item_text: str):
+        """Method to set table item into the table"""
+        table.setItem(row, column, QTableWidgetItem(item_text))
 
     @staticmethod
     def set_column_width(table: QTableWidget, width: int, columns: int):

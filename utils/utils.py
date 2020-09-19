@@ -91,7 +91,7 @@ class Utils:
             map(lambda x: int(x), self.experiment.regression_coeffs.keys()))
         coeffs = self.experiment.regression_coeffs
 
-        for row, name in zip(range(self.experiment.rows), coeffs_names):
+        for row, name in zip(range(1, self.experiment.rows+1), coeffs_names):
             regression_table.setItem(row, 0, QTableWidgetItem(
                 'b' + str(name)))
             # set the regression coeff
@@ -104,7 +104,7 @@ class Utils:
         coeffs_names = sorted(
             map(lambda x: int(x), self.experiment.optimized_regression_coeffs.keys()))
         coeffs = self.experiment.optimized_regression_coeffs
-        for row, name in zip(range(self.experiment.rows), coeffs_names):
+        for row, name in zip(range(1, self.experiment.rows+1), coeffs_names):
             regression_table.setItem(row, 4, QTableWidgetItem(
                 'b' + str(name)))
             # set the optimized regression coeff
