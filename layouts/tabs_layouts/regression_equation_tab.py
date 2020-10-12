@@ -1,4 +1,5 @@
-from PySide2.QtWidgets import QWidget, QVBoxLayout, QLabel
+from PySide2.QtCore import Qt
+from PySide2.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 from dataclasses import dataclass
 
 from layouts import BaseLayout
@@ -6,13 +7,17 @@ from layouts import BaseLayout
 
 @dataclass
 class Layouts:
+    equation_check_layout: QHBoxLayout
+    regression_equation_layout: QHBoxLayout
     main_inner_layout: QVBoxLayout
     main_layout: QWidget
 
 
 @dataclass
 class Labels:
-    equation_label: QLabel
+    equation_text_label: QLabel
+    regression_equation_label: QLabel
+    equation_check_label: QLabel
 
 
 class RegressionEquationLayout(BaseLayout):
@@ -24,10 +29,28 @@ class RegressionEquationLayout(BaseLayout):
     def build_layout(self):
         layouts = self.utils.get_elements(Layouts)
         labels = self.utils.get_elements(Labels, ["Regression equation"])
+
+        self.set_labels_alignment(labels)
         return self.compose_layout(layouts, labels)
 
     @staticmethod
     def compose_layout(layouts, labels):
-        layouts.main_inner_layout.addWidget(labels.equation_label)
+        layouts.regression_equation_layout.addWidget(labels.equation_text_label)
+        layouts.regression_equation_layout.addWidget(labels.regression_equation_label)
+
+        layouts.equation_check_layout.addWidget(labels.equation_check_label)
+
+        layouts.main_inner_layout.addLayout(layouts.regression_equation_layout)
+        layouts.main_inner_layout.addLayout(layouts.equation_check_layout)
         layouts.main_layout.setLayout(layouts.main_inner_layout)
         return layouts.main_layout
+
+    def set_labels_alignment(self,
+                             labels: Labels,
+                             alignment: Qt.Alignment = Qt.AlignCenter):
+        """Method to set labels alignment
+
+        :param labels: labels to set the alignment
+        :param alignment: default labels alignment
+        """
+        self.utils.set_alignment(labels.equation_text_label, alignment)
