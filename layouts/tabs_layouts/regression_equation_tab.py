@@ -1,5 +1,5 @@
 from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QGroupBox
+from PySide2.QtWidgets import QVBoxLayout, QLabel, QHBoxLayout, QGroupBox
 from dataclasses import dataclass
 
 from layouts import BaseLayout

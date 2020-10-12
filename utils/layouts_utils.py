@@ -1,7 +1,7 @@
 from typing import List, Tuple
 
 from PySide2 import QtGui, QtCore, QtWidgets
-from PySide2.QtWidgets import QLineEdit, QTableWidget, QTableWidgetItem, QWidget, \
+from PySide2.QtWidgets import QLineEdit, QTableWidget, QTableWidgetItem, \
     QGroupBox, QLabel
 from dataclasses import dataclass
 
