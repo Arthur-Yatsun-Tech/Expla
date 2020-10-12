@@ -1,5 +1,5 @@
 from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
+from PySide2.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QGroupBox
 from dataclasses import dataclass
 
 from layouts import BaseLayout
@@ -10,7 +10,7 @@ class Layouts:
     equation_check_layout: QHBoxLayout
     regression_equation_layout: QHBoxLayout
     main_inner_layout: QVBoxLayout
-    main_layout: QWidget
+    main_layout: QGroupBox
 
 
 @dataclass
@@ -38,6 +38,7 @@ class RegressionEquationLayout(BaseLayout):
         layouts.regression_equation_layout.addWidget(labels.equation_text_label)
         layouts.regression_equation_layout.addWidget(labels.regression_equation_label)
 
+        labels.regression_equation_label.setText("asdf")
         layouts.equation_check_layout.addWidget(labels.equation_check_label)
 
         layouts.main_inner_layout.addLayout(layouts.regression_equation_layout)
@@ -54,3 +55,4 @@ class RegressionEquationLayout(BaseLayout):
         :param alignment: default labels alignment
         """
         self.utils.set_alignment(labels.equation_text_label, alignment)
+        self.utils.set_alignment(labels.regression_equation_label, alignment)

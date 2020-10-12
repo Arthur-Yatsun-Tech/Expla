@@ -111,3 +111,7 @@ class ControllersUtils:
         regression_table = self.utils.get_regression_table(controllers_layout)
         self.experiment.calculate_and_optimize_regression_coeffs()
         self.utils.set_regression_coeffs_in_table(regression_table)
+
+        regression_equation_label = self.utils.get_regression_equation_label(
+            controllers_layout)
+        self.utils.set_regression_equation(regression_equation_label)

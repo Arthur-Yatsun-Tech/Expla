@@ -66,7 +66,7 @@ class Utils:
             self.experiment.count_of_experiments - 1)
         main_window = current_layout.parent()
         tab_widget = main_window.children()[-1]
-        criteria_widget = tab_widget.findChildren(QGroupBox)[0]
+        criteria_widget = tab_widget.findChildren(QGroupBox)[1]
         labels = criteria_widget.findChildren(QLabel)
 
         student_result_label = labels[1]
@@ -126,6 +126,22 @@ class Utils:
             # set the optimized regression interval
             regression_table.setItem(row, 10, QTableWidgetItem(
                 str(coeffs[str(name)][1])))
+
+    def set_regression_equation(self, regression_label):
+        equation = self.create_regression_equation()
+        regression_label.setText(equation)
+
+    def create_regression_equation(self) -> str:
+        equation = 'y = '
+        for key, value in self.experiment.optimized_regression_coeffs.items():
+            if key == "0":
+                equation += f'{value[0]} '
+            if value[0] < 0:
+                equation += f' + ({value[0]}*x{key})'
+            else:
+                equation += f' + {value[0]}*x{key}'
+        return equation
+
 
     def set_experiment_table_headers(self, table):
         x = [f'x{i + 1}' for i in range(self.experiment.factors)]

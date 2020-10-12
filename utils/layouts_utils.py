@@ -1,7 +1,8 @@
 from typing import List, Tuple
 
 from PySide2 import QtGui, QtCore, QtWidgets
-from PySide2.QtWidgets import QLineEdit, QTableWidget, QTableWidgetItem
+from PySide2.QtWidgets import QLineEdit, QTableWidget, QTableWidgetItem, QWidget, \
+    QGroupBox, QLabel
 from dataclasses import dataclass
 
 from core.experiment import Experiment
@@ -79,6 +80,14 @@ class LayoutsUtils(Utils):
         main_window = current_layout.parent()
         tab_widget = main_window.children()[-1]
         return tab_widget.findChildren(QTableWidget)[0]
+
+    @staticmethod
+    def get_regression_equation_label(current_layout):
+        main_window = current_layout.parent()
+        tab_widget = main_window.children()[-1]
+        criteria_widget = tab_widget.findChildren(QGroupBox)[0]
+        labels = criteria_widget.findChildren(QLabel)
+        return labels[1]
 
     @staticmethod
     def set_table_counts(table: QTableWidget, rows: int, columns: int):
